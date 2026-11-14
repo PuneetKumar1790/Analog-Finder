@@ -4,6 +4,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-38bdf8?style=for-the-badge&logo=vercel)](https://analog-finder-amber.vercel.app/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-PuneetKumar1790%2FAnalog--Finder-181717?style=for-the-badge&logo=github)](https://github.com/PuneetKumar1790/Analog-Finder)
+[![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-Google%20Colab-F9AB00?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/github/PuneetKumar1790/Analog-Finder/blob/main/notebooks/Analog_Finder_Colab.ipynb)
 
 🌐 **Live Web Application:** [https://analog-finder-amber.vercel.app/](https://analog-finder-amber.vercel.app/)
 
