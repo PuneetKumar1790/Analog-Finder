@@ -253,6 +253,8 @@ def main():
     )
     jezero_feat["name"] = cfg["targets"]["jezero"]["name"]
     jezero_feat["body"] = cfg["targets"]["jezero"]["body"]
+    jezero_feat["diameter_km"] = cfg["targets"]["jezero"].get("diameter_km", 45.0)
+    jezero_feat["description"] = cfg["targets"]["jezero"].get("description", "")
     jezero_feat["diurnal_range"] = cfg["targets"]["jezero"]["diurnal_range_k"]
     targets_out["jezero"] = jezero_feat
     print(f"Jezero Crater (Mars): Slope={jezero_feat['mean_slope']}°, Roughness={jezero_feat['roughness']}m, Relief={jezero_feat['local_relief']}m")
@@ -264,6 +266,8 @@ def main():
     )
     gale_feat["name"] = cfg["targets"]["gale"]["name"]
     gale_feat["body"] = cfg["targets"]["gale"]["body"]
+    gale_feat["diameter_km"] = cfg["targets"]["gale"].get("diameter_km", 154.0)
+    gale_feat["description"] = cfg["targets"]["gale"].get("description", "")
     gale_feat["diurnal_range"] = cfg["targets"]["gale"]["diurnal_range_k"]
     targets_out["gale"] = gale_feat
     print(f"Gale Crater (Mars): Slope={gale_feat['mean_slope']}°, Roughness={gale_feat['roughness']}m, Relief={gale_feat['local_relief']}m")
@@ -272,6 +276,8 @@ def main():
     shack_feat = compute_moon_features(os.path.join(DATA_RAW, "shackleton_elev.npy"))
     shack_feat["name"] = cfg["targets"]["shackleton"]["name"]
     shack_feat["body"] = cfg["targets"]["shackleton"]["body"]
+    shack_feat["diameter_km"] = cfg["targets"]["shackleton"].get("diameter_km", 21.0)
+    shack_feat["description"] = cfg["targets"]["shackleton"].get("description", "")
     shack_feat["diurnal_range"] = cfg["targets"]["shackleton"]["diurnal_range_k"]
     targets_out["shackleton"] = shack_feat
     print(f"Shackleton Crater Rim (Moon): Slope={shack_feat['mean_slope']}°, Roughness={shack_feat['roughness']}m, Relief={shack_feat['local_relief']}m")

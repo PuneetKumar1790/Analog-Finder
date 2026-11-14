@@ -7,6 +7,8 @@
     "elev_max": -894.0,
     "name": "Jezero Crater",
     "body": "Mars",
+    "diameter_km": 45.0,
+    "description": "Ancient Martian lake basin featuring a prominent preserved river delta, clay-rich sedimentary deposits, crater rim scarps, and dry aeolian sand dunes. Landed on by NASA Perseverance.",
     "diurnal_range": 75.0
   },
   "gale": {
@@ -17,6 +19,8 @@
     "elev_max": 1070.0,
     "name": "Gale Crater",
     "body": "Mars",
+    "diameter_km": 154.0,
+    "description": "Deep impact basin hosting Aeolis Mons (Mount Sharp), a central sedimentary peak rising 5.5 km from the crater floor with stratified sulfate and clay layers explored by NASA Curiosity.",
     "diurnal_range": 82.0
   },
   "shackleton": {
@@ -27,6 +31,8 @@
     "elev_max": 1959.0,
     "name": "Shackleton Crater Rim",
     "body": "Moon",
+    "diameter_km": 21.0,
+    "description": "Ultra-cold lunar south polar crater with permanently shadowed regions (water ice traps) alongside rim ridges receiving near-continuous illumination. Extreme slopes (>25\u00b0) and heavily cratered regolith.",
     "diurnal_range": 45.0
   }
 }

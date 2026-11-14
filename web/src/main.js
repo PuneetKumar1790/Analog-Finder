@@ -19,28 +19,33 @@ let map = null;
 let currentMarkers = [];
 let selectedLocation = null;
 
-// Free Dark Basemap Style (CARTO Dark Matter, no API keys)
+// Free Dark Basemap Style (ESRI Dark Gray Canvas - No API Key, No Watermark)
 const MAP_STYLE = {
   version: 8,
   sources: {
-    'carto-dark': {
+    'esri-dark': {
       type: 'raster',
       tiles: [
-        'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-        'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-        'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
       ],
       tileSize: 256,
-      attribution: '© OpenStreetMap contributors, © CARTO'
+      attribution: 'Esri, HERE, Garmin, © OpenStreetMap contributors'
+    },
+    'esri-labels': {
+      type: 'raster',
+      tiles: [
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
+      ],
+      tileSize: 256
     }
   },
   layers: [
     {
-      id: 'carto-dark-layer',
+      id: 'esri-dark-layer',
       type: 'raster',
-      source: 'carto-dark',
+      source: 'esri-dark',
       minzoom: 0,
-      maxzoom: 19
+      maxzoom: 16
     }
   ]
 };
@@ -446,10 +451,13 @@ function renderTargetFingerprint() {
   if (!target) return;
 
   const box = document.getElementById('target-fingerprint-box');
+  const diameterText = target.diameter_km ? `${target.diameter_km} km Ø` : '';
+  const descText = target.description || 'Target planetary surface region for quantitative terrestrial analog matching.';
+
   box.innerHTML = `
     <div class="flex-between">
-      <span class="group-label">${target.name} Signature</span>
-      <span class="val-badge">${target.diameter_km ? `${target.diameter_km} km Ø` : ''}</span>
+      <span class="group-label">${target.name || ''} Signature</span>
+      <span class="val-badge">${diameterText}</span>
     </div>
     <div class="fingerprint-grid">
       <div class="fp-stat">
@@ -466,7 +474,7 @@ function renderTargetFingerprint() {
       </div>
     </div>
     <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
-      ${target.description}
+      ${descText}
     </p>
   `;
 
