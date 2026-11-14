@@ -322,6 +322,11 @@ body {
   border: 1px solid var(--border);
 }
 
+.toggle-buttons.filter-tabs {
+  grid-template-columns: 1fr 1.2fr 1fr;
+  margin-bottom: 8px;
+}
+
 .toggle-btn {
   background: none;
   border: none;

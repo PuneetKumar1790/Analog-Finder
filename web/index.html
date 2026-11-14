@@ -137,7 +137,15 @@
 
       <!-- Top Earth Candidates Quick Feed -->
       <section class="control-group">
-        <label class="group-label">Top Ranked Earth Matches</label>
+        <div class="flex-between">
+          <label class="group-label">Top Ranked Earth Matches</label>
+          <button class="text-btn" id="btn-export-csv" title="Export top analog matches to CSV for QGIS / ArcGIS">📥 Export CSV</button>
+        </div>
+        <div class="toggle-buttons filter-tabs">
+          <button class="toggle-btn active" data-filter="all" id="filter-all">🌐 All Earth</button>
+          <button class="toggle-btn" data-filter="accessible" id="filter-accessible" title="Accessible field expedition sites (|lat| < 60°)">🚗 Accessible</button>
+          <button class="toggle-btn" data-filter="polar" id="filter-polar" title="Polar cold deserts">❄️ Polar</button>
+        </div>
         <div class="candidate-list" id="candidate-list">
           <!-- Populated dynamically -->
         </div>

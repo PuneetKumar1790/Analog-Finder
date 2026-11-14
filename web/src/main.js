@@ -9,6 +9,7 @@ let earthStats = {};
 
 let activeTarget = 'jezero';
 let activeMethod = 'cos';
+let activeFilter = 'all'; // 'all', 'accessible', 'polar'
 let weights = {
   slope: 0.45,
   roughness: 0.35,
@@ -248,8 +249,16 @@ function updateCandidatesList() {
     relief: weights.relief / totalW
   };
 
+  // Geographic filter
+  let filteredCells = candidateCells;
+  if (activeFilter === 'accessible') {
+    filteredCells = candidateCells.filter(c => Math.abs(c.lat) <= 60.0);
+  } else if (activeFilter === 'polar') {
+    filteredCells = candidateCells.filter(c => Math.abs(c.lat) > 60.0);
+  }
+
   // Recalculate similarity for candidate cells in < 2ms
-  const scored = candidateCells.map(cell => ({
+  const scored = filteredCells.map(cell => ({
     ...cell,
     sim: calculateCellSimilarity(cell, target, normW)
   }));
@@ -304,6 +313,67 @@ function updateCandidatesList() {
     listEl.appendChild(item);
     if (count >= 8) break;
   }
+}
+
+function exportTopCandidatesCSV() {
+  const target = targets[activeTarget];
+  if (!target || candidateCells.length === 0) return;
+
+  const totalW = weights.slope + weights.roughness + weights.relief;
+  const normW = {
+    slope: weights.slope / totalW,
+    roughness: weights.roughness / totalW,
+    relief: weights.relief / totalW
+  };
+
+  let pool = candidateCells;
+  if (activeFilter === 'accessible') {
+    pool = candidateCells.filter(c => Math.abs(c.lat) <= 60.0);
+  } else if (activeFilter === 'polar') {
+    pool = candidateCells.filter(c => Math.abs(c.lat) > 60.0);
+  }
+
+  const scored = pool.map(cell => ({
+    ...cell,
+    sim: calculateCellSimilarity(cell, target, normW)
+  }));
+  scored.sort((a, b) => b.sim - a.sim);
+
+  const rows = [
+    ["Rank", "Target_Site", "Target_Body", "Region_Name", "Latitude", "Longitude", "Match_Percent", "Mean_Slope_deg", "Roughness_m", "Local_Relief_m", "Elevation_m", "Annual_Precip_mm"]
+  ];
+
+  const seen = [];
+  let rank = 0;
+  for (const c of scored) {
+    if (seen.some(s => Math.abs(s.lat - c.lat) < 1.0 && Math.abs(s.lon - c.lon) < 1.0)) continue;
+    seen.push(c);
+    rank++;
+    rows.push([
+      rank,
+      `"${target.name}"`,
+      `"${target.body}"`,
+      `"${getRegionName(c.lat, c.lon)}"`,
+      c.lat.toFixed(3),
+      c.lon.toFixed(3),
+      (c.sim * 100).toFixed(2),
+      c.slope.toFixed(2),
+      c.roughness.toFixed(1),
+      c.relief.toFixed(1),
+      c.elevation,
+      c.precip
+    ]);
+    if (rank >= 50) break;
+  }
+
+  const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `NASA_Analog_Finder_${activeTarget}_top50.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function getRegionName(lat, lon) {
@@ -549,6 +619,22 @@ function setupEvents() {
       updateCandidatesList();
     });
   });
+
+  // Geographic Filter Tabs (All, Accessible, Polar)
+  document.querySelectorAll('.filter-tabs .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tabs .toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      updateCandidatesList();
+    });
+  });
+
+  // Export CSV Button
+  const btnCsv = document.getElementById('btn-export-csv');
+  if (btnCsv) {
+    btnCsv.addEventListener('click', exportTopCandidatesCSV);
+  }
 
   // Method Toggle
   const btnCos = document.getElementById('toggle-cos');
