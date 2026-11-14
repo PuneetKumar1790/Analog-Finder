@@ -1,0 +1,41 @@
+{
+  "jezero": {
+    "mean_slope": 2.01,
+    "roughness": 289.0,
+    "local_relief": 2053.0,
+    "elev_min": -2947.0,
+    "elev_max": -894.0,
+    "name": "Jezero Crater",
+    "body": "Mars",
+    "diurnal_range": 75.0,
+    "z_s": 0.0261,
+    "z_r": 2.3078,
+    "z_l": 6.6354
+  },
+  "gale": {
+    "mean_slope": 4.66,
+    "roughness": 1399.8,
+    "local_relief": 5601.0,
+    "elev_min": -4531.0,
+    "elev_max": 1070.0,
+    "name": "Gale Crater",
+    "body": "Mars",
+    "diurnal_range": 82.0,
+    "z_s": 0.3313,
+    "z_r": 13.9057,
+    "z_l": 19.3342
+  },
+  "shackleton": {
+    "mean_slope": 16.07,
+    "roughness": 1146.9,
+    "local_relief": 4831.5,
+    "elev_min": -2872.5,
+    "elev_max": 1959.0,
+    "name": "Shackleton Crater Rim",
+    "body": "Moon",
+    "diurnal_range": 45.0,
+    "z_s": 1.6455,
+    "z_r": 11.2652,
+    "z_l": 16.58
+  }
+}

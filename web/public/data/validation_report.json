@@ -1,0 +1,347 @@
+{
+  "jezero": {
+    "target": {
+      "mean_slope": 2.01,
+      "roughness": 289.0,
+      "local_relief": 2053.0,
+      "elev_min": -2947.0,
+      "elev_max": -894.0,
+      "name": "Jezero Crater",
+      "body": "Mars",
+      "diurnal_range": 75.0
+    },
+    "known_analogs": [
+      {
+        "analog_id": "atacama",
+        "name": "Atacama Desert (Yungay)",
+        "region": "Chile",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9908133745193481,
+        "cosine_rank": 51,
+        "cosine_percentile": 99.99,
+        "mahalanobis_similarity": 1.1388918685257004e-05,
+        "mahalanobis_distance": 22.77,
+        "mahalanobis_rank": 1122,
+        "mahalanobis_percentile": 99.78
+      },
+      {
+        "analog_id": "haughton",
+        "name": "Haughton Impact Crater",
+        "region": "Devon Island, Canada",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.19193431735038757,
+        "cosine_rank": 187788,
+        "cosine_percentile": 62.45,
+        "mahalanobis_similarity": 1.4279598630143434e-06,
+        "mahalanobis_distance": 26.92,
+        "mahalanobis_rank": 37262,
+        "mahalanobis_percentile": 92.55
+      },
+      {
+        "analog_id": "death_valley",
+        "name": "Death Valley (Badwater Basin)",
+        "region": "California, USA",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.962925910949707,
+        "cosine_rank": 10633,
+        "cosine_percentile": 97.87,
+        "mahalanobis_similarity": 2.99984222775733e-05,
+        "mahalanobis_distance": 20.83,
+        "mahalanobis_rank": 332,
+        "mahalanobis_percentile": 99.93
+      },
+      {
+        "analog_id": "iceland",
+        "name": "Iceland Highlands (Askja / Holuhraun)",
+        "region": "Iceland",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9719216227531433,
+        "cosine_rank": 2674,
+        "cosine_percentile": 99.47,
+        "mahalanobis_similarity": 4.646040347703599e-06,
+        "mahalanobis_distance": 24.56,
+        "mahalanobis_rank": 4296,
+        "mahalanobis_percentile": 99.14
+      },
+      {
+        "analog_id": "mojave",
+        "name": "Mojave Desert (Cima / Kelso)",
+        "region": "California, USA",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9805357456207275,
+        "cosine_rank": 419,
+        "cosine_percentile": 99.92,
+        "mahalanobis_similarity": 3.4990660241652565e-05,
+        "mahalanobis_distance": 20.52,
+        "mahalanobis_rank": 275,
+        "mahalanobis_percentile": 99.95
+      },
+      {
+        "analog_id": "mcmurdo",
+        "name": "McMurdo Dry Valleys",
+        "region": "Antarctica",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.9507081508636475,
+        "cosine_rank": 30805,
+        "cosine_percentile": 93.84,
+        "mahalanobis_similarity": 8.343825113403236e-06,
+        "mahalanobis_distance": 23.39,
+        "mahalanobis_rank": 1792,
+        "mahalanobis_percentile": 99.64
+      }
+    ],
+    "new_candidates": [
+      {
+        "name": "Qaidam Basin Yardangs & Clay Playas",
+        "region": "Northern Tibetan Plateau, China",
+        "lat": 37.5,
+        "lon": 93.8,
+        "rationale": "High-altitude hyper-arid closed basin containing extensive fossil lake deposits, clay/evaporite minerals, and wind-sculpted yardangs. Closely matches Jezero's ancient lacustrine and deltaic environment, low average slope (1.1\u00b0), and arid deflationary regime."
+      },
+      {
+        "name": "Puna de Atacama / Salar de Arizaro",
+        "region": "Salta Province, Argentina",
+        "lat": -24.8,
+        "lon": -67.8,
+        "rationale": "Ultra-arid, high-elevation Andean plateau (>3,800 m) featuring salt flats, volcanic rim barriers, and low vegetation cover (<50 mm precip). Matches Jezero's moderate roughness and basin containment."
+      },
+      {
+        "name": "Uvs Nuur Basin",
+        "region": "Mongolia / Tuva Border",
+        "lat": 50.3,
+        "lon": 92.8,
+        "rationale": "Enclosed, hyper-continental endorheic basin with dry alluvial fans, gravel plains, and extreme seasonal thermal swings, providing an analog for enclosed Martian delta deposition."
+      }
+    ]
+  },
+  "gale": {
+    "target": {
+      "mean_slope": 4.66,
+      "roughness": 1399.8,
+      "local_relief": 5601.0,
+      "elev_min": -4531.0,
+      "elev_max": 1070.0,
+      "name": "Gale Crater",
+      "body": "Mars",
+      "diurnal_range": 82.0
+    },
+    "known_analogs": [
+      {
+        "analog_id": "atacama",
+        "name": "Atacama Desert (Yungay)",
+        "region": "Chile",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9937543869018555,
+        "cosine_rank": 26244,
+        "cosine_percentile": 94.75,
+        "mahalanobis_similarity": 6.093717669021888e-08,
+        "mahalanobis_distance": 33.23,
+        "mahalanobis_rank": 2093,
+        "mahalanobis_percentile": 99.58
+      },
+      {
+        "analog_id": "haughton",
+        "name": "Haughton Impact Crater",
+        "region": "Devon Island, Canada",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.08410689234733582,
+        "cosine_rank": 210423,
+        "cosine_percentile": 57.92,
+        "mahalanobis_similarity": 7.499501115515328e-09,
+        "mahalanobis_distance": 37.42,
+        "mahalanobis_rank": 50488,
+        "mahalanobis_percentile": 89.9
+      },
+      {
+        "analog_id": "death_valley",
+        "name": "Death Valley (Badwater Basin)",
+        "region": "California, USA",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9981715679168701,
+        "cosine_rank": 4027,
+        "cosine_percentile": 99.19,
+        "mahalanobis_similarity": 2.685107441216949e-07,
+        "mahalanobis_distance": 30.26,
+        "mahalanobis_rank": 401,
+        "mahalanobis_percentile": 99.92
+      },
+      {
+        "analog_id": "iceland",
+        "name": "Iceland Highlands (Askja / Holuhraun)",
+        "region": "Iceland",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.9955918788909912,
+        "cosine_rank": 16629,
+        "cosine_percentile": 96.67,
+        "mahalanobis_similarity": 2.738535107339823e-08,
+        "mahalanobis_distance": 34.83,
+        "mahalanobis_rank": 6037,
+        "mahalanobis_percentile": 98.79
+      },
+      {
+        "analog_id": "mojave",
+        "name": "Mojave Desert (Cima / Kelso)",
+        "region": "California, USA",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9963340759277344,
+        "cosine_rank": 12734,
+        "cosine_percentile": 97.45,
+        "mahalanobis_similarity": 2.020869175100924e-07,
+        "mahalanobis_distance": 30.83,
+        "mahalanobis_rank": 551,
+        "mahalanobis_percentile": 99.89
+      },
+      {
+        "analog_id": "mcmurdo",
+        "name": "McMurdo Dry Valleys",
+        "region": "Antarctica",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.9926179647445679,
+        "cosine_rank": 31850,
+        "cosine_percentile": 93.63,
+        "mahalanobis_similarity": 7.831311622911597e-08,
+        "mahalanobis_distance": 32.73,
+        "mahalanobis_rank": 1549,
+        "mahalanobis_percentile": 99.69
+      }
+    ],
+    "new_candidates": [
+      {
+        "name": "San Juan Precordillera Basin",
+        "region": "Cuyo, Western Argentina",
+        "lat": -30.8,
+        "lon": -69.8,
+        "rationale": "Extremely dry intermontane graben flanked by steep tectonic and sedimentary escarpments, replicating Gale Crater's high local relief (2,400+ m) and central mound (Mount Sharp) slope profile."
+      },
+      {
+        "name": "Ladakh / Changthang High-Altitude Desert",
+        "region": "NW Himalayas / Indus Suture Zone, India",
+        "lat": 33.1,
+        "lon": 78.6,
+        "rationale": "Cold, permafrost-rich arid mountain basin (>4,500 m) characterized by massive alluvial fans, braided outwash plains, and high UV flux, mimicking Gale's fluvial-to-aeolian stratified sediments."
+      },
+      {
+        "name": "Central Zagros Arid Fold Belt",
+        "region": "Fars / Isfahan Province, Iran",
+        "lat": 31.8,
+        "lon": 50.4,
+        "rationale": "Barren folded sedimentary strata with steep anticline cuestas and dry salt domes, mirroring the layered sulfate and clay mounds of Aeolis Mons in Gale Crater."
+      }
+    ]
+  },
+  "shackleton": {
+    "target": {
+      "mean_slope": 16.07,
+      "roughness": 1146.9,
+      "local_relief": 4831.5,
+      "elev_min": -2872.5,
+      "elev_max": 1959.0,
+      "name": "Shackleton Crater Rim",
+      "body": "Moon",
+      "diurnal_range": 45.0
+    },
+    "known_analogs": [
+      {
+        "analog_id": "atacama",
+        "name": "Atacama Desert (Yungay)",
+        "region": "Chile",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.9960298538208008,
+        "cosine_rank": 1010,
+        "cosine_percentile": 99.8,
+        "mahalanobis_similarity": 1.2876886642910781e-07,
+        "mahalanobis_distance": 31.73,
+        "mahalanobis_rank": 1862,
+        "mahalanobis_percentile": 99.63
+      },
+      {
+        "analog_id": "haughton",
+        "name": "Haughton Impact Crater",
+        "region": "Devon Island, Canada",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.08464008569717407,
+        "cosine_rank": 199696,
+        "cosine_percentile": 60.07,
+        "mahalanobis_similarity": 1.5619961043947174e-08,
+        "mahalanobis_distance": 35.95,
+        "mahalanobis_rank": 47989,
+        "mahalanobis_percentile": 90.4
+      },
+      {
+        "analog_id": "death_valley",
+        "name": "Death Valley (Badwater Basin)",
+        "region": "California, USA",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.9983698129653931,
+        "cosine_rank": 237,
+        "cosine_percentile": 99.95,
+        "mahalanobis_similarity": 5.210605426884667e-07,
+        "mahalanobis_distance": 28.93,
+        "mahalanobis_rank": 372,
+        "mahalanobis_percentile": 99.93
+      },
+      {
+        "analog_id": "iceland",
+        "name": "Iceland Highlands (Askja / Holuhraun)",
+        "region": "Iceland",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9996093511581421,
+        "cosine_rank": 41,
+        "cosine_percentile": 99.99,
+        "mahalanobis_similarity": 5.641403041730991e-08,
+        "mahalanobis_distance": 33.38,
+        "mahalanobis_rank": 5564,
+        "mahalanobis_percentile": 98.89
+      },
+      {
+        "analog_id": "mojave",
+        "name": "Mojave Desert (Cima / Kelso)",
+        "region": "California, USA",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.9995265007019043,
+        "cosine_rank": 54,
+        "cosine_percentile": 99.99,
+        "mahalanobis_similarity": 4.26966953339475e-07,
+        "mahalanobis_distance": 29.33,
+        "mahalanobis_rank": 469,
+        "mahalanobis_percentile": 99.91
+      },
+      {
+        "analog_id": "mcmurdo",
+        "name": "McMurdo Dry Valleys",
+        "region": "Antarctica",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.9957568049430847,
+        "cosine_rank": 1180,
+        "cosine_percentile": 99.76,
+        "mahalanobis_similarity": 1.4936894269712293e-07,
+        "mahalanobis_distance": 31.43,
+        "mahalanobis_rank": 1547,
+        "mahalanobis_percentile": 99.69
+      }
+    ],
+    "new_candidates": [
+      {
+        "name": "Quttinirpaaq / Ellesmere Island Highlands",
+        "region": "Nunavut, High Canadian Arctic",
+        "lat": 81.8,
+        "lon": -75.5,
+        "rationale": "Northernmost polar desert on Earth with exposed, shattered bedrock peaks and microthermal permafrost valleys, mimicking the rugged rim crests and shadowed depressions of the Lunar South Pole."
+      },
+      {
+        "name": "Bowers Mountains Nunataks",
+        "region": "Victoria Land, Transantarctic Mountains",
+        "lat": -71.6,
+        "lon": 162.8,
+        "rationale": "Steep rocky nunatak escarpments protruding through sub-zero polar ice with continuous catabatic winds, providing a physical terrain analog for Shackleton's sharp crater crests."
+      },
+      {
+        "name": "Western Andean Volcanic Escarpment",
+        "region": "Arequipa Highlands, Southern Peru",
+        "lat": -15.8,
+        "lon: ": -72.1,
+        "rationale": "Hyper-arid, high-relief volcanic caldera walls (>4,000 m) with bare regolith, extreme slope angles (>4\u00b0), and zero surface water, reflecting lunar impact rim morphometry."
+      }
+    ]
+  }
+}

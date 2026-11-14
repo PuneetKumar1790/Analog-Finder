@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analog Finder | NASA Space Apps Challenge 2026</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo">
+        <span class="logo-icon">🪐</span>
+        <div class="logo-text">
+          <span class="brand">ANALOG FINDER</span>
+          <span class="tagline">NASA Space Apps 2026 Challenge</span>
+        </div>
+      </div>
+      <div class="target-badge" id="active-target-badge">
+        <span class="body-icon">🔴</span>
+        <span class="target-name">Jezero Crater (Mars)</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" id="btn-validation-tab">
+        <span class="icon">📊</span> Validation Table
+      </button>
+      <button class="nav-btn" id="btn-how-it-works">
+        <span class="icon">ℹ️</span> How It Works
+      </button>
+      <a href="https://github.com" target="_blank" class="nav-btn github-btn" title="View Source">
+        <span class="icon">📁</span> Code & Data
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Map Container -->
+  <main class="app-layout">
+    <!-- Map Canvas -->
+    <div id="map"></div>
+
+    <!-- Floating Left Control Panel -->
+    <aside class="control-panel" id="control-panel">
+      <div class="panel-header">
+        <h2>Planetary Analog Search</h2>
+        <p class="panel-subtitle">Match Moon & Mars target sites to Earth terrain</p>
+      </div>
+
+      <!-- Target Selection -->
+      <section class="control-group">
+        <label class="group-label">1. Select Target Site</label>
+        <div class="target-cards" id="target-selector">
+          <div class="target-card active" data-target="jezero">
+            <div class="target-header">
+              <span class="body-tag mars">MARS</span>
+              <span class="target-title">Jezero Crater</span>
+            </div>
+            <div class="target-stats">18.38°N, 77.58°E • Lake Basin & Delta</div>
+          </div>
+
+          <div class="target-card" data-target="gale">
+            <div class="target-header">
+              <span class="body-tag mars">MARS</span>
+              <span class="target-title">Gale Crater</span>
+            </div>
+            <div class="target-stats">5.40°S, 137.80°E • Mt. Sharp (5.5 km peak)</div>
+          </div>
+
+          <div class="target-card" data-target="shackleton">
+            <div class="target-header">
+              <span class="body-tag moon">MOON</span>
+              <span class="target-title">Shackleton Rim</span>
+            </div>
+            <div class="target-stats">89.90°S, 0.00°E • South Pole Cold-Traps</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Target Fingerprint Quick View -->
+      <div class="target-fingerprint" id="target-fingerprint-box">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Similarity Method Toggle -->
+      <section class="control-group">
+        <div class="flex-between">
+          <label class="group-label">2. Similarity Metric</label>
+          <span class="method-badge" id="method-indicator">Angle Metric</span>
+        </div>
+        <div class="toggle-buttons">
+          <button class="toggle-btn active" data-method="cos" id="toggle-cos">
+            Cosine Similarity
+          </button>
+          <button class="toggle-btn" data-method="mah" id="toggle-mah">
+            Mahalanobis Distance
+          </button>
+        </div>
+      </section>
+
+      <!-- Feature Re-weighting Sliders -->
+      <section class="control-group">
+        <div class="flex-between">
+          <label class="group-label">3. Client-Side Feature Weights</label>
+          <button class="text-btn" id="btn-reset-weights" title="Reset to scientifically optimized baseline">Reset Baseline</button>
+        </div>
+        
+        <div class="slider-box">
+          <div class="slider-label">
+            <span>Mean Slope (degrees)</span>
+            <span class="val-badge" id="val-w-slope">45%</span>
+          </div>
+          <input type="range" id="slider-w-slope" min="0" max="100" value="45" class="slider">
+        </div>
+
+        <div class="slider-box">
+          <div class="slider-label">
+            <span>Roughness (std dev elevation)</span>
+            <span class="val-badge" id="val-w-rough">35%</span>
+          </div>
+          <input type="range" id="slider-w-rough" min="0" max="100" value="35" class="slider">
+        </div>
+
+        <div class="slider-box">
+          <div class="slider-label">
+            <span>Local Relief (max - min)</span>
+            <span class="val-badge" id="val-w-relief">20%</span>
+          </div>
+          <input type="range" id="slider-w-relief" min="0" max="100" value="20" class="slider">
+        </div>
+        <p class="slider-hint">⚡ Sliders re-evaluate 2,500 candidate Earth locations in real time.</p>
+      </section>
+
+      <!-- Top Earth Candidates Quick Feed -->
+      <section class="control-group">
+        <label class="group-label">Top Ranked Earth Matches</label>
+        <div class="candidate-list" id="candidate-list">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+    </aside>
+
+    <!-- Floating Right Inspection Panel -->
+    <aside class="inspect-panel" id="inspect-panel">
+      <div class="panel-header">
+        <span class="inspect-badge" id="inspect-badge">LOCATION INSPECTION</span>
+        <button class="close-btn" id="btn-close-inspect">✕</button>
+      </div>
+
+      <div class="inspect-content" id="inspect-content">
+        <div class="empty-state">
+          <div class="empty-icon">📍</div>
+          <h3>Select a Location</h3>
+          <p>Click on any highlighted Earth cell or ground-truth pin to inspect its morphometric fingerprint and "Why It Matches" analysis.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Map Legend -->
+    <div class="map-legend">
+      <div class="legend-title">Similarity Score</div>
+      <div class="legend-bar"></div>
+      <div class="legend-labels">
+        <span>Low (&lt;0.70)</span>
+        <span>Moderate (0.85)</span>
+        <span>High (0.95+)</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal: Validation Table -->
+  <div class="modal-backdrop" id="modal-validation">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-icon">🏆</span>
+          <div>
+            <h2>Ground Truth Validation & Benchmark Table</h2>
+            <p>Evaluation of 6 known planetary analogs against 500,073 valid arid Earth cells</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close="modal-validation">✕</button>
+      </div>
+      <div class="modal-body" id="validation-table-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: How It Works -->
+  <div class="modal-backdrop" id="modal-how-it-works">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-icon">🚀</span>
+          <div>
+            <h2>How Analog Finder Works</h2>
+            <p>Reproducible Quantitative Geomorphometry Pipeline</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close="modal-how-it-works">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="how-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Standardized Spatial Scale (~10 km Blocks)</h4>
+            <p>Terrain slope, roughness, and local relief are scale-dependent fractal properties. To prevent sensor resolution bias, Earth (NOAA ETOPO 2022), Mars (MGS MOLA), and Moon (LRO LOLA) are processed at uniform ~10 km spatial windows.</p>
+          </div>
+        </div>
+
+        <div class="how-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Z-Score Normalization & Covariance De-correlation</h4>
+            <p>Every feature is standardized using Earth's continental background distribution: \(z = (x - \mu)/\sigma\). Mahalanobis distance automatically de-correlates the 98.7% collinearity between roughness and relief, isolating true morphological shapes.</p>
+          </div>
+        </div>
+
+        <div class="how-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Dual Similarity Engine & Real-Time Re-weighting</h4>
+            <p>Users can explore both directional alignment (Weighted Cosine Similarity) and multivariate distance (Mahalanobis Distance), with live client-side re-ranking across 2,500 candidate terrain cells.</p>
+          </div>
+        </div>
+
+        <div class="how-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Honest Scientific Limitations</h4>
+            <p>Atmospheric thermal variations between vacuum (Moon), thin \(CO_2\) (Mars), and Earth greenhouse dynamics prevent direct temperature matching without distortion. This pipeline emphasizes rigorous geomorphometry and macroclimate aridity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

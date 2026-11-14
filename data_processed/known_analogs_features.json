@@ -1,0 +1,109 @@
+{
+  "atacama": {
+    "name": "Atacama Desert (Yungay)",
+    "region": "Chile",
+    "lat": -24.05,
+    "lon": -69.95,
+    "target_match": [
+      "jezero",
+      "gale"
+    ],
+    "mean_slope": 2.63,
+    "roughness": 152.1,
+    "local_relief": 662.2,
+    "diurnal_range": 13.3,
+    "annual_precip": 0.0,
+    "elev_min": 867.9,
+    "elev_max": 1530.1,
+    "description": "Hyper-arid desert with perchlorate-bearing soils, high UV radiation, dry salt flats, and negligible organics, widely used as Mars dry-lake and soil analog."
+  },
+  "haughton": {
+    "name": "Haughton Impact Crater",
+    "region": "Devon Island, Canada",
+    "lat": 75.38,
+    "lon": -89.67,
+    "target_match": [
+      "shackleton",
+      "jezero"
+    ],
+    "mean_slope": 1.39,
+    "roughness": 45.4,
+    "local_relief": 177.0,
+    "diurnal_range": 6.2,
+    "annual_precip": 186.0,
+    "elev_min": 113.1,
+    "elev_max": 290.2,
+    "description": "23-km meteorite impact crater in barren polar desert terrain, featuring shattered breccia, hydrothermal paleolakes, permafrost, and NASA Haughton-Mars Project base."
+  },
+  "death_valley": {
+    "name": "Death Valley (Badwater Basin)",
+    "region": "California, USA",
+    "lat": 36.25,
+    "lon": -116.82,
+    "target_match": [
+      "jezero",
+      "gale"
+    ],
+    "mean_slope": 5.56,
+    "roughness": 454.3,
+    "local_relief": 1617.5,
+    "diurnal_range": 15.3,
+    "annual_precip": 104.0,
+    "elev_min": -85.6,
+    "elev_max": 1531.8,
+    "description": "Enclosed fault-block graben basin with large alluvial fans, salt playa flats, and severe aridity, mimicking Martian basin sedimentation."
+  },
+  "iceland": {
+    "name": "Iceland Highlands (Askja / Holuhraun)",
+    "region": "Iceland",
+    "lat": 65.03,
+    "lon": -16.75,
+    "target_match": [
+      "shackleton",
+      "jezero"
+    ],
+    "mean_slope": 3.62,
+    "roughness": 170.4,
+    "local_relief": 634.8,
+    "diurnal_range": 4.2,
+    "annual_precip": 1051.0,
+    "elev_min": 682.6,
+    "elev_max": 1317.5,
+    "description": "Barren basaltic volcanic plains, tephra sand, and volcanic craters used by Apollo astronauts and Artemis teams for lunar and Martian terrain/rover testing."
+  },
+  "mojave": {
+    "name": "Mojave Desert (Cima / Kelso)",
+    "region": "California, USA",
+    "lat": 35.0,
+    "lon": -115.5,
+    "target_match": [
+      "jezero",
+      "gale"
+    ],
+    "mean_slope": 4.36,
+    "roughness": 242.9,
+    "local_relief": 1019.0,
+    "diurnal_range": 14.7,
+    "annual_precip": 181.0,
+    "elev_min": 808.9,
+    "elev_max": 1827.9,
+    "description": "Basin and range desert with basaltic volcanic fields, sand dunes, and arid bajadas, used extensively by NASA JPL for Mars rover trials."
+  },
+  "mcmurdo": {
+    "name": "McMurdo Dry Valleys",
+    "region": "Antarctica",
+    "lat": -77.5,
+    "lon": 162.5,
+    "target_match": [
+      "shackleton"
+    ],
+    "mean_slope": 8.52,
+    "roughness": 448.5,
+    "local_relief": 1484.9,
+    "diurnal_range": 6.0,
+    "annual_precip": 78.0,
+    "elev_min": 264.2,
+    "elev_max": 1749.1,
+    "description": "Hyper-arid, ultra-cold ice-free polar desert valleys with permafrost, sandstone ventifacts, and endolithic microbes, serving as prime Mars and lunar polar analogs."
+  }
+}

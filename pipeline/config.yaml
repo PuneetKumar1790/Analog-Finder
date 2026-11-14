@@ -1,0 +1,99 @@
+# Analog Finder Pipeline Configuration
+# NASA Space Apps Challenge 2026
+
+resolution:
+  grid_deg: 0.1             # ~10 km per cell at mid-latitudes
+  sampling_block_km: 10.0   # Block window size for computing roughness, relief, slope
+
+features:
+  include_diurnal_range: false   # Optional thermal toggle. When false, pure geomorphometry (slope, roughness, relief)
+  max_annual_precip_mm: 500.0    # Aridity mask threshold (WorldClim bio12): exclude hyper-humid/dense vegetation
+  mask_oceans: true              # Exclude sea-level ocean bathymetry (ETOPO elevation <= 0)
+
+similarity:
+  default_method: "cosine"       # Options: "cosine", "mahalanobis"
+  weights:
+    mean_slope: 0.35
+    roughness: 0.35
+    local_relief: 0.30
+    diurnal_range: 0.0           # Active when include_diurnal_range is true
+
+targets:
+  shackleton:
+    name: "Shackleton Crater Rim"
+    body: "Moon"
+    lat: -89.9
+    lon: 0.0
+    diameter_km: 21.0
+    description: "Ultra-cold lunar south polar crater with permanently shadowed regions (water ice traps) alongside rim ridges receiving near-continuous illumination. Extreme slopes (>25°) and heavily cratered regolith."
+    diurnal_range_k: 45.0        # Literature: Diviner measured rim fluctuations ~150-195 K
+  jezero:
+    name: "Jezero Crater"
+    body: "Mars"
+    lat: 18.38
+    lon: 77.58
+    diameter_km: 45.0
+    description: "Ancient Martian lake basin featuring a prominent preserved river delta, clay-rich sedimentary deposits, crater rim scarps, and dry aeolian sand dunes. Landed on by NASA Perseverance."
+    diurnal_range_k: 75.0        # Literature: THEMIS/MEDA surface temp range ~180-255 K
+  gale:
+    name: "Gale Crater"
+    body: "Mars"
+    lat: -5.4
+    lon: 137.8
+    diameter_km: 154.0
+    description: "Deep impact basin hosting Aeolis Mons (Mount Sharp), a central sedimentary peak rising 5.5 km from the crater floor with stratified sulfate and clay layers explored by NASA Curiosity."
+    diurnal_range_k: 82.0        # Literature: MSL REMS daily surface temp range ~195-277 K
+
+known_analogs:
+  atacama:
+    name: "Atacama Desert (Yungay)"
+    region: "Chile"
+    lat: -24.05
+    lon: -69.95
+    target_match: ["jezero", "gale"]
+    description: "Hyper-arid desert with perchlorate-bearing soils, high UV radiation, dry salt flats, and negligible organics, widely used as Mars dry-lake and soil analog."
+  haughton:
+    name: "Haughton Impact Crater"
+    region: "Devon Island, Canada"
+    lat: 75.38
+    lon: -89.67
+    target_match: ["shackleton", "jezero"]
+    description: "23-km meteorite impact crater in barren polar desert terrain, featuring shattered breccia, hydrothermal paleolakes, permafrost, and NASA Haughton-Mars Project base."
+  death_valley:
+    name: "Death Valley (Badwater Basin)"
+    region: "California, USA"
+    lat: 36.25
+    lon: -116.82
+    target_match: ["jezero", "gale"]
+    description: "Enclosed fault-block graben basin with large alluvial fans, salt playa flats, and severe aridity, mimicking Martian basin sedimentation."
+  iceland:
+    name: "Iceland Highlands (Askja / Holuhraun)"
+    region: "Iceland"
+    lat: 65.03
+    lon: -16.75
+    target_match: ["shackleton", "jezero"]
+    description: "Barren basaltic volcanic plains, tephra sand, and volcanic craters used by Apollo astronauts and Artemis teams for lunar and Martian terrain/rover testing."
+  mojave:
+    name: "Mojave Desert (Cima / Kelso)"
+    region: "California, USA"
+    lat: 35.0
+    lon: -115.5
+    target_match: ["jezero", "gale"]
+    description: "Basin and range desert with basaltic volcanic fields, sand dunes, and arid bajadas, used extensively by NASA JPL for Mars rover trials."
+  mcmurdo:
+    name: "McMurdo Dry Valleys"
+    region: "Antarctica"
+    lat: -77.5
+    lon: 162.5
+    target_match: ["shackleton"]
+    description: "Hyper-arid, ultra-cold ice-free polar desert valleys with permafrost, sandstone ventifacts, and endolithic microbes, serving as prime Mars and lunar polar analogs."
+
+data_urls:
+  earth_etopo: "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/60s/60s_surface_elev_gtif/ETOPO_2022_v1_60s_N90W180_surface.tif"
+  earth_climate: "https://geodata.ucdavis.edu/climate/worldclim/2_1/base/wc2.1_10m_bio.zip"
+  mars_mola: "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/megt90n000eb.img"
+  mars_mola_lbl: "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/megt90n000eb.lbl"
+  moon_lola: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_16.img"
+  moon_lola_lbl: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_16.lbl"
+  moon_lola_south_pole: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_875s_20m.img"
+  moon_lola_south_pole_lbl: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_875s_20m.lbl"

@@ -1,0 +1,20 @@
+# Environment & dependencies
+node_modules/
+web/node_modules/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Raw data downloads cache (reproducible via pipeline/01_fetch.py)
+data_raw/
+
+# Build artifacts
+dist/
+web/dist/
+.vite/
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
