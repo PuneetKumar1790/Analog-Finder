@@ -2,6 +2,11 @@
 
 > **"Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars."**
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-38bdf8?style=for-the-badge&logo=vercel)](https://analog-finder-amber.vercel.app/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-PuneetKumar1790%2FAnalog--Finder-181717?style=for-the-badge&logo=github)](https://github.com/PuneetKumar1790/Analog-Finder)
+
+🌐 **Live Web Application:** [https://analog-finder-amber.vercel.app/](https://analog-finder-amber.vercel.app/)
+
 *Analog Finder* is an open-source, reproducible geospatial analysis pipeline and interactive web application that quantitatively matches candidate lunar and Martian exploration sites against terrestrial environments using standardized 10-kilometer terrain fingerprints and macroclimate constraints.
 
 ---
