@@ -376,7 +376,7 @@
         "median_top_pct": 0.08
       }
     },
-    "robustness_takeaway": "Atacama Desert (#51, Top 0.01%) exhibits exceptional ranking stability (IQR=7 across 200 weight perturbations), while flat negative controls (Lake Eyre #495k, Sahara Erg #406k) are rejected to the bottom 19% of Earth, confirming the multi-feature screen successfully separates crater topography from flat plains.",
+    "robustness_takeaway": "Every negative control ranks below every primary analog: Atacama (#51) and Mojave (#419) rank in the top 0.1%, while negative controls land between #199k (top 39.9%) and #495k (bottom 0.8%). Perturbation IQR for Atacama is just 7 ranks. Note: all six negative controls are low-relief flatlands, so this serves as a baseline discriminative check.",
     "new_candidates": [
       {
         "name": "Qaidam Basin Yardangs & Clay Playas",
@@ -697,7 +697,7 @@
         "median_top_pct": 2.51
       }
     },
-    "robustness_takeaway": "Death Valley (#4,027, Top 0.81%) and Mojave Desert (#12,734, Top 2.55%) beat random arid cells by 20x to 60x, while dropping local relief degrades rank by up to 8x and flat negative controls rank between #219k and #484k.",
+    "robustness_takeaway": "Every negative control ranks below every primary analog: Death Valley (#4,027) and Mojave (#12,734) easily outperform the random-sample 90th percentile (#54,820), while negative controls range from #220k to #484k. Dropping relief degrades Death Valley to #10,633, confirming relief is vital for Mount Sharp's 5.5 km vertical structure.",
     "new_candidates": [
       {
         "name": "San Juan Precordillera Basin",
@@ -1045,7 +1045,7 @@
         "median_top_pct": 0.23
       }
     },
-    "robustness_takeaway": "Iceland Highlands (#41, Top 0.01%) and McMurdo Dry Valleys (#1,180, Top 0.24%) maintain Top <0.25% stability under perturbations, strongly outperforming the random baseline (#245,500) and rejecting flat plains (#424k\u2013493k) due to extreme lunar polar relief and slopes.",
+    "robustness_takeaway": "Every negative control ranks below every primary analog: Iceland Highlands (#41) and McMurdo (#1,180) outperform the random-sample 90th percentile (#55,837) and maintain narrow perturbation IQRs (14 ranks), while flat plains drop to #424k\u2013#493k due to Shackleton's steep rim slopes.",
     "new_candidates": [
       {
         "name": "Quttinirpaaq / Ellesmere Island Highlands",

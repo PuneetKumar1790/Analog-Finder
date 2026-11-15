@@ -162,9 +162,9 @@ NEW_CANDIDATE_REGIONS = {
 }
 
 ROBUSTNESS_TAKEAWAYS = {
-    "jezero": "Atacama Desert (#51, Top 0.01%) exhibits exceptional ranking stability (IQR=7 across 200 weight perturbations), while flat negative controls (Lake Eyre #495k, Sahara Erg #406k) are rejected to the bottom 19% of Earth, confirming the multi-feature screen successfully separates crater topography from flat plains.",
-    "gale": "Death Valley (#4,027, Top 0.81%) and Mojave Desert (#12,734, Top 2.55%) beat random arid cells by 20x to 60x, while dropping local relief degrades rank by up to 8x and flat negative controls rank between #219k and #484k.",
-    "shackleton": "Iceland Highlands (#41, Top 0.01%) and McMurdo Dry Valleys (#1,180, Top 0.24%) maintain Top <0.25% stability under perturbations, strongly outperforming the random baseline (#245,500) and rejecting flat plains (#424k–493k) due to extreme lunar polar relief and slopes."
+    "jezero": "Every negative control ranks below every primary analog: Atacama (#51) and Mojave (#419) rank in the top 0.1%, while negative controls land between #199k (top 39.9%) and #495k (bottom 0.8%). Perturbation IQR for Atacama is just 7 ranks. Note: all six negative controls are low-relief flatlands, so this serves as a baseline discriminative check.",
+    "gale": "Every negative control ranks below every primary analog: Death Valley (#4,027) and Mojave (#12,734) easily outperform the random-sample 90th percentile (#54,820), while negative controls range from #220k to #484k. Dropping relief degrades Death Valley to #10,633, confirming relief is vital for Mount Sharp's 5.5 km vertical structure.",
+    "shackleton": "Every negative control ranks below every primary analog: Iceland Highlands (#41) and McMurdo (#1,180) outperform the random-sample 90th percentile (#55,837) and maintain narrow perturbation IQRs (14 ranks), while flat plains drop to #424k–#493k due to Shackleton's steep rim slopes."
 }
 
 def validate():
@@ -414,23 +414,36 @@ def validate():
 
         # --- E. Sensitivity Analysis (200 Perturbations) ---
         print(f"\n[SECTION 5: WEIGHT SENSITIVITY (200 PERTURBATIONS)]")
+        model_target_scores = []
+        for model in sensitivity_models:
+            w_sq = model["w_sq"]
+            Zw = model["Zw"]
+            norm_Zw = model["norm_Zw"]
+            ztw_s = z_t * w_sq
+            norm_ztw_s = np.linalg.norm(ztw_s)
+            scores_all_s = np.clip((np.dot(Zw, ztw_s) / (norm_Zw * norm_ztw_s + 1e-9) + 1.0) / 2.0, 0.0, 1.0)
+            model_target_scores.append({
+                "w_sq": w_sq,
+                "ztw_s": ztw_s,
+                "norm_ztw_s": norm_ztw_s,
+                "scores_all_s": scores_all_s
+            })
+
         sensitivity_target_results = {}
         for a_key, a_info in analogs.items():
             if t_key not in a_info["target_match"]:
                 continue
             z_a = z_analogs[a_key]
             ranks_list = []
-            for model in sensitivity_models:
-                w_sq = model["w_sq"]
-                Zw = model["Zw"]
-                norm_Zw = model["norm_Zw"]
-                ztw_s = z_t * w_sq
-                norm_ztw_s = np.linalg.norm(ztw_s)
+            for mts in model_target_scores:
+                w_sq = mts["w_sq"]
+                ztw_s = mts["ztw_s"]
+                norm_ztw_s = mts["norm_ztw_s"]
+                scores_all_s = mts["scores_all_s"]
+
                 zaw_s = z_a * w_sq
                 norm_zaw_s = np.linalg.norm(zaw_s)
-
                 score_s = float(np.clip((np.dot(zaw_s, ztw_s) / (norm_zaw_s * norm_ztw_s + 1e-9) + 1.0) / 2.0, 0.0, 1.0))
-                scores_all_s = np.clip((np.dot(Zw, ztw_s) / (norm_Zw * norm_ztw_s + 1e-9) + 1.0) / 2.0, 0.0, 1.0)
                 rank_s = int(np.sum(scores_all_s > score_s)) + 1
                 ranks_list.append(rank_s)
 

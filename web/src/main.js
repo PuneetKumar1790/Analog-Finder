@@ -839,7 +839,7 @@ function renderValidationModal() {
             <th>COSINE SIM (S_c)</th>
             <th>GLOBAL RANK</th>
             <th>PERCENTILE</th>
-            <th>MAHALANOBIS (D_M)</th>
+            <th>MAHALANOBIS (TARGET D_M & RANK)</th>
           </tr>
         </thead>
         <tbody>
@@ -857,7 +857,7 @@ function renderValidationModal() {
             <td>${a.cosine_similarity.toFixed(4)}</td>
             <td><span class="rank-pill ${rankPillClass}">#${a.cosine_rank.toLocaleString()}</span></td>
             <td style="color:${isTop1 ? 'var(--color-benchmark-gold)' : 'var(--text-bright)'}">TOP ${(100 - a.cosine_percentile).toFixed(2)}%</td>
-            <td>D<sub>M</sub> = ${a.mahalanobis_distance}</td>
+            <td>D<sub>M</sub> = ${a.mahalanobis_distance} <span style="font-size:0.68rem; color:var(--text-dim)">(#${a.mahalanobis_rank.toLocaleString()}, Top ${(100 - a.mahalanobis_percentile).toFixed(2)}%)</span></td>
           </tr>
         `;
       });

@@ -29,15 +29,15 @@
 
 ### [1:15 – 1:35] CONTROLS, ABLATION & ROBUSTNESS (NEW)
 *(Click '[01] BENCHMARK MATRIX' -> switch to tab '[02] CONTROLS & ROBUSTNESS')*
-> *"To ensure scientific integrity, we don't just celebrate high rankings—we run negative controls and ablation tests.*  
-> *Notice our negative controls: flat arid regions like **Lake Eyre Salt Playa** rank **#495,905 out of 500,073 (in the bottom 0.8% of Earth)**, and the **Sahara Sand Sea (Grand Erg Oriental)** drops to rank **#406,681**. Random arid land averages the 49th percentile, proving known analogs decisively beat chance.*  
+> *"To ensure scientific integrity, we don't just celebrate high rankings—we run negative controls and sensitivity tests.*  
+> *Notice our negative controls: **every negative control ranks below every primary analog**. Flat salt playas like **Lake Eyre** drop to rank **#495,905 (in the bottom 0.8% of Earth)**, and all primary analogs rank better than the random-sample 90th percentile.*  
 > *Furthermore, across **200 random weight vector perturbations**, Atacama's ranking is rock-solid with an Interquartile Range of just **7 ranks** (median #49). Even when dropping slope or roughness in our ablation test, the core ranking topology holds firm."*
 
 ---
 
 ### [1:35 – 1:50] GROUND TRUTH BENCHMARKS & NOVEL DISCOVERIES
 *(Switch back to tab '[01] BENCHMARK MATRIX')*
-> *"We benchmarked against **7 literature-recognized planetary analogs**, including Haughton Impact Crater in Devon Island and Apollo/Artemis training ground Kilbourne Hole.*  
+> *"We benchmarked against **7 literature-recognized planetary analogs**. Notice our honest limits: sites like Haughton Crater and Kilbourne Hole rank lower (~33%) because their value is in impact breccia and volcanic geology—which a pure terrain screen can't see. Terrain screening finds where to test rover mobility and relief; mineralogy is the natural next step.*  
 > *Beyond known analogs, our algorithm discovered **genuine new candidate clusters**: the **Qaidam Basin yardangs** (Rank #969, top 0.19%) in Tibet for Jezero's deltaic deflation, the **San Juan Precordillera** (Rank #14, top 0.003%) in Argentina for Mount Sharp's 5 km relief, and **Bowers Mountains Nunataks** (Rank #5, top 0.001%) in Antarctica for Shackleton's sharp crater rim."*
 
 ---

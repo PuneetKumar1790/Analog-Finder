@@ -93,14 +93,14 @@ The algorithm's validity is evaluated by benchmarking where 7 literature-recogni
    - *Result for Shackleton Rim:* **Rank #54 (Top 0.01%)**, Cosine = 0.9995.
    - *Result for Jezero:* **Rank #419 (Top 0.08%)**.
 4. **Death Valley (Badwater Basin, California, USA):** Mars graben and alluvial fan analog.
-   - *Result for Gale Crater:* **Rank #4,027 (Top 0.81%)**, Mahalanobis Top 0.08% ($D_M = 11.2$).
-   - *Result for Shackleton:* **Rank #237 (Top 0.05%)**.
+   - *Result for Gale Crater:* **Rank #4,027 (Top 0.81%)** in Cosine, and **Top 0.08%** in Mahalanobis ($D_M = 30.26$, Rank #401 out of 500,073 cells).
+   - *Result for Shackleton:* **Rank #237 (Top 0.05%)** in Cosine, and $D_M = 28.93$ (Rank #372, Top 0.07%).
 5. **McMurdo Dry Valleys (Antarctica):** Polar cold desert analog.
    - *Result for Shackleton Rim:* **Rank #1,180 (Top 0.24%)**. McMurdo has the steepest slope ($8.52^\circ$) and highest roughness ($448.5\text{ m}$) among terrestrial analogs.
 6. **Haughton Impact Crater (Devon Island, Nunavut, Canada; 75.37°N, 89.68°W):** Impact structure in Arctic permafrost.
-   - *Terrain Diagnostic Finding:* Falls within the arid mask ($P = 186\text{ mm} \le 500\text{ mm}$), ranking #161,800 (Top 32.36%) for Jezero and #168,388 (Top 33.67%) for Shackleton. Because Pleistocene glaciers eroded Haughton's rim leaving only $219.2\text{ m}$ of local relief (vs >2,000 m on Mars/Moon rims), pure terrain morphometry ranks it modestly, highlighting that scientists value Haughton primarily for its *impact breccia, shatter cones, and permafrost hydrothermal deposits* rather than steep topographic relief.
+   - *Terrain Diagnostic Finding:* Falls within the arid mask ($P = 186\text{ mm} \le 500\text{ mm}$), ranking #161,800 (Top 32.36%) for Jezero and #168,388 (Top 33.67%) for Shackleton ($D_M = 26.26$ and $35.31$). Pure terrain morphometry ranks it modestly because Haughton is valued for **impact geology, shock metamorphism (shatter cones, suevite), and cold-permafrost hydrothermal alteration**, not steep relief, which a terrain screen cannot detect.
 7. **Kilbourne Hole Maar (Potrillo Volcanic Field, New Mexico, USA; 31.97°N, 106.96°W):** Apollo 12–17 and Artemis lunar training ground.
-   - *Terrain Diagnostic Finding:* Arid mask compliant ($P = 241\text{ mm}$), ranking #164,291 (Top 32.85%) for Jezero. As an explosive volcanic maar crater set in flat desert plains (slope $0.49^\circ$, relief $225.5\text{ m}$), it represents an ejecta and mantle xenolith training ground rather than a deep regional relief match.
+   - *Terrain Diagnostic Finding:* Arid mask compliant ($P = 241\text{ mm}$), ranking #164,291 (Top 32.85%) for Jezero. As an explosive volcanic maar crater set in flat desert plains (slope $0.49^\circ$, relief $225.5\text{ m}$), Apollo and Artemis crews trained there for mantle xenolith sampling and volcanic ejecta observation rather than high-relief traverse testing.
 
 ---
 
@@ -117,7 +117,8 @@ To establish statistical significance and guard against false positives, four qu
 - **US High Plains (Kansas/Colorado):** Jezero Rank **#224,091 (Top 44.81%)**, Cosine = 0.9080.
 - **Qiangtang Steppe Basin (Tibet):** Jezero Rank **#199,410 (Top 39.88%)**, Cosine = 0.9200.
 
-Every negative control places far below the benchmark analogs, confirming the metric discriminates relief and texture.
+**Takeaway:** Every negative control ranks below every primary analog (primary analogs place in the top 0.01% to 5.25%, whereas the best negative control only reaches top 39.88%).  
+*Note on limitation:* All six negative controls are low-relief flatlands, representing a baseline discriminative check.
 
 ### 6.2 Random Arid Baseline ($N=1,000$)
 1,000 randomly sampled Earth arid cells were evaluated to determine background rank distributions:
@@ -125,7 +126,7 @@ Every negative control places far below the benchmark analogs, confirming the me
 - **Gale Crater:** Median Rank **#245,618 (Top 49.12%)**, 90th percentile **#54,820 (Top 10.96%)**.
 - **Shackleton Rim:** Median Rank **#245,500 (Top 49.09%)**, 90th percentile **#55,837 (Top 11.17%)**.
 
-All primary literature analogs beat the 90th percentile of random arid terrain by 1 to 3 orders of magnitude.
+**Takeaway:** All primary literature analogs rank better than the random-sample 90th percentile.
 
 ### 6.3 Feature Ablation Tests
 Recomputing global rankings dropping each morphometric feature one at a time demonstrates the indispensable role of multi-feature coupling:
@@ -149,8 +150,8 @@ The extremely narrow IQRs prove the similarity topology is structurally stable a
    This pipeline delivers a terrain-first screen (slope, roughness, relief + macroclimate aridity filter), not a complete mineralogical or astrobiological match. Thermal inertia, perchlorate soil chemistry, phyllosilicate/clay composition, and cosmic radiation flux represent future multi-spectral extensions.
 2. **Shackleton Spatial Footprint & Illumination Constraints:**
    Shackleton Crater (~21 km rim-to-rim diameter) spans only a few 10 km equal-area blocks, meaning its regional elevation signature is comparatively coarse. Crucially, Permanently Shadowed Regions (PSRs) and volatile cold traps (~40 K) are dictated by low solar elevation geometry, which cannot be captured by terrain morphometry alone.
-3. **Glacial Erosion of Ancient Impact Structures:**
-   Terrestrial craters like Haughton (39 Ma) have suffered extensive Pleistocene glacial planation, reducing rim relief to ~219 m. Terrestrial impact analogs are primarily valuable for impact shock metamorphism, suevite breccia, and endolithic habitats rather than pristine crater rim topography.
+3. **How to Interpret Haughton Crater and Kilbourne Hole:**
+   Terrain screening finds where to test mobility and relief. Haughton Crater (#161,800, Top 32.4%) and Kilbourne Hole (#164,291, Top 32.9%) rank lower in pure topography because their primary scientific value lies in impact breccia, shock metamorphism, and volcanic mantle xenoliths rather than high relief. Adding orbital mineralogy is the natural next step.
 4. **Atmospheric & Thermal Dissimilarity:**
    The Moon is an airless vacuum ($0\text{ atm}$); Mars possesses a thin $CO_2$ atmosphere ($\sim 0.006\text{ atm}$); Earth possesses a dense atmosphere with a greenhouse effect ($\sim 1\text{ atm}$). Planetary diurnal temperature swings ($45\text{–}85\text{ K}$) are governed by radiative equilibrium, whereas Earth's diurnal range is damped by convection and moisture.
 5. **Client-Side Candidate Pool vs. Offline Universe:**
