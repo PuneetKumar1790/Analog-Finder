@@ -8,7 +8,7 @@ let candidateCells = [];
 let earthStats = {};
 
 let activeTarget = 'jezero';
-let activeMethod = 'cos';
+let activeMethod = 'mah';
 let activeFilter = 'all'; // 'all', 'accessible', 'polar'
 let weights = {
   slope: 0.45,
@@ -836,10 +836,10 @@ function renderValidationModal() {
             <th>MISSION TARGET</th>
             <th>LITERATURE ANALOG</th>
             <th>CLASSIFICATION</th>
-            <th>COSINE SIM (S_c)</th>
+            <th>MAHALANOBIS (D_M) [PRIMARY]</th>
             <th>GLOBAL RANK</th>
             <th>PERCENTILE</th>
-            <th>MAHALANOBIS (TARGET D_M & RANK)</th>
+            <th>COSINE (S_c) [SECONDARY]</th>
           </tr>
         </thead>
         <tbody>
@@ -847,17 +847,19 @@ function renderValidationModal() {
 
     Object.entries(validationReport).forEach(([tKey, tData]) => {
       tData.known_analogs.forEach(a => {
-        const isTop1 = a.cosine_rank <= 5000;
-        const rankPillClass = isTop1 ? 'rank-top1' : (a.cosine_rank <= 25000 ? 'rank-top5' : 'rank-other');
+        const isTop1 = (a.mahalanobis_rank || a.cosine_rank) <= 5000;
+        const rankPillClass = isTop1 ? 'rank-top1' : ((a.mahalanobis_rank || a.cosine_rank) <= 25000 ? 'rank-top5' : 'rank-other');
+        const mahRank = a.mahalanobis_rank || a.cosine_rank;
+        const mahPct = a.mahalanobis_percentile ? (100 - a.mahalanobis_percentile).toFixed(2) : (100 - a.cosine_percentile).toFixed(2);
         html += `
           <tr>
             <td><strong>${tData.target.name}</strong></td>
             <td>${a.name} <span style="font-size:0.68rem; color:var(--text-dim)">[${a.region}]</span></td>
             <td>${a.is_primary_target_match ? '<span style="color:var(--color-benchmark-gold); font-weight:700;">PRIMARY BENCHMARK</span>' : '<span style="color:var(--text-muted);">SECONDARY</span>'}</td>
-            <td>${a.cosine_similarity.toFixed(4)}</td>
-            <td><span class="rank-pill ${rankPillClass}">#${a.cosine_rank.toLocaleString()}</span></td>
-            <td style="color:${isTop1 ? 'var(--color-benchmark-gold)' : 'var(--text-bright)'}">TOP ${(100 - a.cosine_percentile).toFixed(2)}%</td>
-            <td>D<sub>M</sub> = ${a.mahalanobis_distance} <span style="font-size:0.68rem; color:var(--text-dim)">(#${a.mahalanobis_rank.toLocaleString()}, Top ${(100 - a.mahalanobis_percentile).toFixed(2)}%)</span></td>
+            <td><strong>D<sub>M</sub> = ${a.mahalanobis_distance !== undefined ? a.mahalanobis_distance.toFixed(2) : '-'}</strong></td>
+            <td><span class="rank-pill ${rankPillClass}">#${mahRank.toLocaleString()}</span></td>
+            <td style="color:${isTop1 ? 'var(--color-benchmark-gold)' : 'var(--text-bright)'}">TOP ${mahPct}%</td>
+            <td>${a.cosine_similarity.toFixed(4)} <span style="font-size:0.68rem; color:var(--text-dim)">(#${a.cosine_rank.toLocaleString()})</span></td>
           </tr>
         `;
       });
@@ -904,9 +906,10 @@ function renderValidationModal() {
             <th>NEGATIVE CONTROL REGION</th>
             <th>TERRAIN CHARACTERISTICS</th>
             <th>MASK STATUS</th>
-            <th>COSINE SIM</th>
+            <th>MAHALANOBIS (D_M) [PRIMARY]</th>
             <th>GLOBAL RANK</th>
             <th>PERCENTILE</th>
+            <th>COSINE RANK [SECONDARY]</th>
           </tr>
         </thead>
         <tbody>
@@ -915,9 +918,10 @@ function renderValidationModal() {
               <td><strong>${nc.name}</strong><br><span style="font-size:0.68rem; color:var(--text-dim)">${nc.region} (${nc.lat.toFixed(2)}°, ${nc.lon.toFixed(2)}°)</span></td>
               <td style="font-family:var(--font-mono); font-size:0.68rem;">Slope: ${nc.slope}° | Rough: ${nc.roughness}m | Relief: ${nc.local_relief}m</td>
               <td>${nc.is_in_arid_mask ? '<span class="rank-pill rank-top5">IN ARID MASK</span>' : '<span class="rank-pill rank-other">MASK-FREE CHECK</span>'}</td>
-              <td style="font-family:var(--font-mono);">${nc.cosine_similarity.toFixed(4)}</td>
-              <td><span class="rank-pill rank-other">#${nc.cosine_rank.toLocaleString()}</span></td>
-              <td style="color:var(--text-muted);">Top ${nc.top_percentile.toFixed(2)}%</td>
+              <td style="font-family:var(--font-mono); font-weight:700;">D<sub>M</sub> = ${nc.mahalanobis_distance !== undefined ? nc.mahalanobis_distance.toFixed(2) : '-'}</td>
+              <td><span class="rank-pill rank-other">#${(nc.mahalanobis_rank || nc.cosine_rank).toLocaleString()}</span></td>
+              <td style="color:var(--text-muted);">Top ${(nc.mahalanobis_top_percentile !== undefined ? nc.mahalanobis_top_percentile : nc.top_percentile).toFixed(2)}%</td>
+              <td style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-dim);">#${nc.cosine_rank.toLocaleString()} (Top ${nc.top_percentile.toFixed(1)}%)</td>
             </tr>
           `).join('')}
         </tbody>
@@ -930,17 +934,17 @@ function renderValidationModal() {
       </div>
       <div class="baseline-stats-grid">
         <div class="baseline-card">
-          <span class="baseline-card-label">RANDOM SAMPLE MEDIAN RANK</span>
-          <span class="baseline-card-val">#${(tData.random_baseline?.median_rank || 242943).toLocaleString()} <span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">(Top ${tData.random_baseline?.median_top_percentile || 48.6}%)</span></span>
+          <span class="baseline-card-label">MAHALANOBIS MEDIAN RANK</span>
+          <span class="baseline-card-val">#${(tData.random_baseline?.mahalanobis_median_rank || tData.random_baseline?.median_rank || 233996).toLocaleString()} <span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">(Top ${(tData.random_baseline?.mahalanobis_median_top_percentile || tData.random_baseline?.median_top_percentile || 46.8).toFixed(1)}%)</span></span>
         </div>
         <div class="baseline-card">
-          <span class="baseline-card-label">RANDOM SAMPLE 90TH PERCENTILE</span>
-          <span class="baseline-card-val">#${(tData.random_baseline?.p90_rank || 54191).toLocaleString()} <span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">(Top ${tData.random_baseline?.p90_top_percentile || 10.8}%)</span></span>
+          <span class="baseline-card-label">MAHALANOBIS 90TH PERCENTILE CUTOFF</span>
+          <span class="baseline-card-val">#${(tData.random_baseline?.mahalanobis_p90_rank || tData.random_baseline?.p90_rank || 50289).toLocaleString()} <span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">(Top ${(tData.random_baseline?.mahalanobis_p90_top_percentile || tData.random_baseline?.p90_top_percentile || 10.1).toFixed(1)}%)</span></span>
         </div>
         <div class="baseline-card" style="grid-column: span 2;">
           <span class="baseline-card-label">BENCHMARK PERFORMANCE OVER RANDOM</span>
           <span class="baseline-card-val" style="color:var(--color-benchmark-gold); font-size:0.85rem;">
-            Primary analogs (#41 to #4,027) outperform random median by up to 4,700x and 90th percentile by over 13x–1,300x.
+            Under Mahalanobis, all 7 literature analogs rank better than the random-sample 90th percentile (~#50k cutoff).
           </span>
         </div>
       </div>
@@ -1081,7 +1085,7 @@ function setupEvents() {
     btnCos.classList.add('active');
     btnMah.classList.remove('active');
     activeMethod = 'cos';
-    methodInd.innerText = 'Angular Vector Normalization [S_c = (u·v)/(||u|| ||v||)]';
+    methodInd.innerText = 'Secondary Metric: Directional Cosine [S_c = (u·v)/(||u|| ||v||)]. Evaluates angular proportion, ignoring absolute elevation scale.';
     updateHeatmapLayer();
   });
 
@@ -1089,7 +1093,7 @@ function setupEvents() {
     btnMah.classList.add('active');
     btnCos.classList.remove('active');
     activeMethod = 'mah';
-    methodInd.innerText = 'Inverse Covariance Distance [D_M = √((x - μ)ᵀ Σ⁻¹ (x - μ))]';
+    methodInd.innerText = 'Primary Metric: Inverse Covariance Distance [D_M = √((x - μ)ᵀ Σ⁻¹ (x - μ))]. Decouples relief/roughness collinearity (r=0.987).';
     updateHeatmapLayer();
   });
 

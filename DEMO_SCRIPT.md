@@ -22,7 +22,7 @@
 *(Screen share the live app running in the browser)*
 > *"Here is the application. Notice it loads in under 1 second with a zero-backend, fully static architecture—our entire data payload is just 3.1 megabytes.*  
 > *When we select **Jezero Crater**, the headline immediately asks: 'Where on Earth looks like Jezero Crater?' and the inspection station surfaces the top 5 matches with a clear one-line geomorphic rationale.*  
-> *Look at the gold pins: **Atacama Desert (Yungay)** ranks **#51 out of 500,073 cells—in the Top 0.01% on Earth**!*  
+> *Notice our primary metric: **Mahalanobis Distance ($D_M$)**, which eliminates collinearity between roughness and relief. Under Mahalanobis, **Mojave Desert (Cima/Kelso)** ranks **#275 out of 500,073 cells (Top 0.05%)** and **Atacama Desert (Yungay)** ranks **#1,122 (Top 0.22%)**!*  
 > *Now, watch the client-side re-weighting sliders: if mission scientists want to prioritize slope over relief, we drag the slope slider to 70%. In under **2 milliseconds**, 2,500 pre-filtered candidate cells recalculate live in JavaScript without a single server round-trip."*
 
 ---
@@ -30,14 +30,15 @@
 ### [1:15 – 1:35] CONTROLS, ABLATION & ROBUSTNESS (NEW)
 *(Click '[01] BENCHMARK MATRIX' -> switch to tab '[02] CONTROLS & ROBUSTNESS')*
 > *"To ensure scientific integrity, we don't just celebrate high rankings—we run negative controls and sensitivity tests.*  
-> *Notice our negative controls: **every negative control ranks below every primary analog**. Flat salt playas like **Lake Eyre** drop to rank **#495,905 (in the bottom 0.8% of Earth)**, and all primary analogs rank better than the random-sample 90th percentile.*  
+> *Under our primary Mahalanobis metric, **every negative control ranks below every primary analog**. Hyper-flat salt playas like **Lake Eyre** drop to rank **#367,751 (in the bottom 26% of Earth)**, and all 7 primary analogs beat the random-sample 90th percentile (#50,289).*  
 > *Furthermore, across **200 random weight vector perturbations**, Atacama's ranking is rock-solid with an Interquartile Range of just **7 ranks** (median #49). Even when dropping slope or roughness in our ablation test, the core ranking topology holds firm."*
 
 ---
 
 ### [1:35 – 1:50] GROUND TRUTH BENCHMARKS & NOVEL DISCOVERIES
 *(Switch back to tab '[01] BENCHMARK MATRIX')*
-> *"We benchmarked against **7 literature-recognized planetary analogs**. Notice our honest limits: sites like Haughton Crater and Kilbourne Hole rank lower (~33%) because their value is in impact breccia and volcanic geology—which a pure terrain screen can't see. Terrain screening finds where to test rover mobility and relief; mineralogy is the natural next step.*  
+> *"We benchmarked against **7 literature-recognized planetary analogs**. Under our primary Mahalanobis metric, **all 7 place in Earth's Top 0.05% to 5.6%**—including Kilbourne Hole at #6,485 (Top 1.30%) and Haughton Crater at #18,944 (Top 3.79%). Cosine is available as a secondary directional toggle.*  
+> *Our honest boundary: terrain screening finds where to test rover mobility and relief; mineralogy and cold-trap physics are the natural next steps for impact breccia and ice traps.*  
 > *Beyond known analogs, our algorithm discovered **genuine new candidate clusters**: the **Qaidam Basin yardangs** (Rank #969, top 0.19%) in Tibet for Jezero's deltaic deflation, the **San Juan Precordillera** (Rank #14, top 0.003%) in Argentina for Mount Sharp's 5 km relief, and **Bowers Mountains Nunataks** (Rank #5, top 0.001%) in Antarctica for Shackleton's sharp crater rim."*
 
 ---

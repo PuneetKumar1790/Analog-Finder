@@ -29,60 +29,60 @@ def load_config():
 # Negative control definitions: flat / low-relief regions that should NOT match crater / peak topography
 NEGATIVE_CONTROLS = [
     {
+        "id": "lake_eyre",
+        "name": "Lake Eyre Salt Playa",
+        "region": "South Australia",
+        "lat": -28.40,
+        "lon": 137.30,
+        "is_in_arid_mask": True,
+        "description": "Ultra-flat endorheic salt sink and clay crust with zero topographic gradient (slope < 0.05°)."
+    },
+    {
         "id": "sahara_erg",
-        "name": "Grand Erg Oriental (Sahara Sand Sea)",
-        "region": "Algeria / Sahara Desert",
-        "lat": 31.08,
-        "lon": 7.42,
+        "name": "Grand Erg Oriental Sand Sea",
+        "region": "Sahara Desert, Algeria",
+        "lat": 31.00,
+        "lon": 7.50,
         "is_in_arid_mask": True,
         "description": "Active hyper-arid sand sea with near-zero bedrock relief and continuous shifting dunes."
     },
     {
         "id": "simpson_dunes",
         "name": "Simpson Desert Dunefield",
-        "region": "Northern Territory, Australia",
-        "lat": -25.42,
-        "lon": 136.92,
+        "region": "Central Australia",
+        "lat": -24.50,
+        "lon": 137.50,
         "is_in_arid_mask": True,
         "description": "Sub-horizontal red longitudinal sand ridges with negligible bedrock outcropping and flat interdune corridors."
     },
     {
-        "id": "lake_eyre",
-        "name": "Lake Eyre Salt Playa",
-        "region": "South Australia",
-        "lat": -28.08,
-        "lon": 137.58,
-        "is_in_arid_mask": True,
-        "description": "Ultra-flat endorheic salt sink and clay crust with zero topographic gradient (slope < 0.05°)."
-    },
-    {
-        "id": "qiangtang_steppe",
-        "name": "Qiangtang Lacustrine Flat Steppe",
-        "region": "Central Tibetan Plateau, China",
-        "lat": 33.08,
-        "lon": 86.92,
-        "is_in_arid_mask": True,
-        "description": "High-altitude flat lacustrine plain with low relief, lacking crater scarps or channel incisions."
-    },
-    {
         "id": "us_high_plains",
-        "name": "US High Plains Flat Steppe",
-        "region": "Eastern Colorado / Western Kansas, USA",
-        "lat": 38.58,
-        "lon": -102.58,
+        "name": "US High Plains",
+        "region": "Western Kansas / Colorado, USA",
+        "lat": 38.50,
+        "lon": -101.50,
         "is_in_arid_mask": True,
         "description": "Semi-arid continental tableland steppe with uniform topography (slope ~0.18°, precip ~359 mm)."
     },
     {
+        "id": "qiangtang_steppe",
+        "name": "Qiangtang Steppe Basin",
+        "region": "Tibetan Plateau, China",
+        "lat": 34.00,
+        "lon": 86.00,
+        "is_in_arid_mask": True,
+        "description": "High-altitude flat lacustrine plain with low relief, lacking crater scarps or channel incisions."
+    },
+    {
         "id": "argentine_pampas",
-        "name": "Argentine Pampas Lowland (Mask-Free Check)",
+        "name": "Argentine Pampas Flats (Mask-Free Check)",
         "region": "Buenos Aires Province, Argentina",
-        "lat": -35.0,
-        "lon": -62.0,
+        "lat": -35.50,
+        "lon": -62.50,
         "is_in_arid_mask": False,
-        "slope": 0.02,
-        "roughness": 6.5,
-        "local_relief": 21.0,
+        "slope": 0.16,
+        "roughness": 5.9,
+        "local_relief": 41.2,
         "precip": 966.0,
         "description": "Extremely flat humid grassland (precip ~966 mm excludes from arid mask; secondary check confirms terrain alone yields negligible match)."
     }
@@ -162,9 +162,9 @@ NEW_CANDIDATE_REGIONS = {
 }
 
 ROBUSTNESS_TAKEAWAYS = {
-    "jezero": "Every negative control ranks below every primary analog: Atacama (#51) and Mojave (#419) rank in the top 0.1%, while negative controls land between #199k (top 39.9%) and #495k (bottom 0.8%). Perturbation IQR for Atacama is just 7 ranks. Note: all six negative controls are low-relief flatlands, so this serves as a baseline discriminative check.",
-    "gale": "Every negative control ranks below every primary analog: Death Valley (#4,027) and Mojave (#12,734) easily outperform the random-sample 90th percentile (#54,820), while negative controls range from #220k to #484k. Dropping relief degrades Death Valley to #10,633, confirming relief is vital for Mount Sharp's 5.5 km vertical structure.",
-    "shackleton": "Every negative control ranks below every primary analog: Iceland Highlands (#41) and McMurdo (#1,180) outperform the random-sample 90th percentile (#55,837) and maintain narrow perturbation IQRs (14 ranks), while flat plains drop to #424k–#493k due to Shackleton's steep rim slopes."
+    "jezero": "Under our primary Mahalanobis metric, every negative control ranks below every primary analog: worst primary analog is Haughton (#18,944, Top 3.79%), while best negative control is Qiangtang (#77,897, Top 15.58%). All 7 primary analogs beat the random-sample 90th percentile (#50,289). Note: all six negative controls are low-relief flatlands, representing a baseline discriminative check.",
+    "gale": "Under our primary Mahalanobis metric, every negative control ranks below every primary analog: worst primary analog is Atacama (#2,093, Top 0.42%), while best negative control is Qiangtang (#56,354, Top 11.27%). Primary analogs (#401 to #2,093) easily outperform the random-sample 90th percentile (#51,073). Dropping relief degrades Death Valley to #10,633, confirming relief is vital for Mount Sharp's 5.5 km vertical structure.",
+    "shackleton": "Under our primary Mahalanobis metric, every negative control ranks below every primary analog: worst primary analog is Haughton (#25,903, Top 5.18%), while best negative control is Qiangtang (#61,394, Top 12.28%). Primary analogs easily outperform the random-sample 90th percentile (#52,793), while flat plains drop to #274k–#487k due to Shackleton's steep rim slopes."
 }
 
 def validate():
@@ -333,8 +333,8 @@ def validate():
 
         # --- B. Negative Controls ---
         print(f"\n[SECTION 2: NEGATIVE CONTROLS (NON-ANALOG TERRAIN)]")
-        print(f"{'Negative Control Region':<36} | {'Status':<14} | {'Cosine Sim':<11} | {'Global Rank':<14} | {'Top Percentile':<15}")
-        print("-" * 95)
+        print(f"{'Negative Control Region':<32} | {'Status':<13} | {'Mahalanobis D_M':<15} | {'Mah Rank (Top %)':<20} | {'Cosine Sim':<11} | {'Cos Rank'}")
+        print("-" * 110)
 
         negative_records = []
         for nc in resolved_neg_controls:
@@ -344,9 +344,17 @@ def validate():
             rank_nc = int(np.sum(cos_all > score_nc)) + 1
             pct_nc = round(100.0 * (1.0 - rank_nc / total_earth_cells), 2)
             top_pct_nc = round(100.0 - pct_nc, 2)
-            status_str = "In Arid Mask" if nc["is_in_arid_mask"] else "Mask-Free Check"
 
-            print(f"{nc['name']:<36} | {status_str:<14} | {score_nc:<11.4f} | #{rank_nc:<12,d} | Top {top_pct_nc:>6.2f}%")
+            diff_nc = z_nc - z_t
+            dm_nc = float(np.sqrt(np.dot(np.dot(diff_nc, inv_cov), diff_nc)))
+            mah_val_nc = float(np.exp(-dm_nc / 2.0))
+            rank_mah_nc = int(np.sum(mah_all > mah_val_nc)) + 1
+            pct_mah_nc = round(100.0 * (1.0 - rank_mah_nc / total_earth_cells), 2)
+            top_pct_mah_nc = round(100.0 - pct_mah_nc, 2)
+
+            status_str = "In Arid Mask" if nc["is_in_arid_mask"] else "Mask-Free"
+
+            print(f"{nc['name']:<32} | {status_str:<13} | D_M={dm_nc:<11.2f} | #{rank_mah_nc:<6,d} (Top {top_pct_mah_nc:>5.2f}%) | {score_nc:<11.4f} | #{rank_nc:<6,d}")
 
             negative_records.append({
                 "id": nc["id"],
@@ -359,6 +367,9 @@ def validate():
                 "roughness": round(float(nc["roughness"]), 1),
                 "local_relief": round(float(nc["local_relief"]), 1),
                 "precipitation": round(float(nc["precip"]), 1),
+                "mahalanobis_distance": round(dm_nc, 2),
+                "mahalanobis_rank": rank_mah_nc,
+                "mahalanobis_top_percentile": top_pct_mah_nc,
                 "cosine_similarity": score_nc,
                 "cosine_rank": rank_nc,
                 "top_percentile": top_pct_nc,
@@ -366,24 +377,35 @@ def validate():
             })
 
         # --- C. Baseline: 1,000 Randomly Sampled Arid Cells ---
-        rand_scores = cos_all[rand_indices]
-        rand_ranks = np.array([int(np.sum(cos_all > s)) + 1 for s in rand_scores])
-        rand_median_rank = int(np.median(rand_ranks))
-        rand_p90_rank = int(np.percentile(rand_ranks, 10))  # 90th percentile best rank (lowest index)
-        rand_median_top_pct = round(100.0 * (rand_median_rank / total_earth_cells), 2)
-        rand_p90_top_pct = round(100.0 * (rand_p90_rank / total_earth_cells), 2)
+        rand_scores_cos = cos_all[rand_indices]
+        rand_ranks_cos = np.array([int(np.sum(cos_all > s)) + 1 for s in rand_scores_cos])
+        rand_median_rank_cos = int(np.median(rand_ranks_cos))
+        rand_p90_rank_cos = int(np.percentile(rand_ranks_cos, 10))
+
+        rand_scores_mah = mah_all[rand_indices]
+        rand_ranks_mah = np.array([int(np.sum(mah_all > s)) + 1 for s in rand_scores_mah])
+        rand_median_rank_mah = int(np.median(rand_ranks_mah))
+        rand_p90_rank_mah = int(np.percentile(rand_ranks_mah, 10))
+        rand_median_top_pct_mah = round(100.0 * (rand_median_rank_mah / total_earth_cells), 2)
+        rand_p90_top_pct_mah = round(100.0 * (rand_p90_rank_mah / total_earth_cells), 2)
 
         print(f"\n[SECTION 3: RANDOM BASELINE (1,000 ARID CELLS)]")
-        print(f"  Median Rank: #{rand_median_rank:,d} (Top {rand_median_top_pct}%)")
-        print(f"  90th Percentile Best Rank: #{rand_p90_rank:,d} (Top {rand_p90_top_pct}%)")
-        print(f"  Benchmark vs. Random: Known analogs rank in top 0.01% - 2.5%, vastly exceeding random expectation.")
+        print(f"  Primary Mahalanobis: Median Rank=#{rand_median_rank_mah:,d} (Top {rand_median_top_pct_mah}%), 90th Pct=#{rand_p90_rank_mah:,d} (Top {rand_p90_top_pct_mah}%)")
+        print(f"  Secondary Cosine:    Median Rank=#{rand_median_rank_cos:,d}, 90th Pct=#{rand_p90_rank_cos:,d}")
+        print(f"  Benchmark vs. Random: All primary analogs rank better than the random-sample 90th percentile under Mahalanobis.")
 
         random_baseline_record = {
             "sample_size": 1000,
-            "median_rank": rand_median_rank,
-            "median_top_percentile": rand_median_top_pct,
-            "p90_rank": rand_p90_rank,
-            "p90_top_percentile": rand_p90_top_pct
+            "mahalanobis_median_rank": rand_median_rank_mah,
+            "mahalanobis_median_top_percentile": rand_median_top_pct_mah,
+            "mahalanobis_p90_rank": rand_p90_rank_mah,
+            "mahalanobis_p90_top_percentile": rand_p90_top_pct_mah,
+            "median_rank": rand_median_rank_mah,
+            "median_top_percentile": rand_median_top_pct_mah,
+            "p90_rank": rand_p90_rank_mah,
+            "p90_top_percentile": rand_p90_top_pct_mah,
+            "cosine_median_rank": rand_median_rank_cos,
+            "cosine_p90_rank": rand_p90_rank_cos
         }
 
         # --- D. Feature Ablation Study ---

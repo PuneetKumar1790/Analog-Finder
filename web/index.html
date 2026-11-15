@@ -127,16 +127,17 @@
 
       <section class="control-group">
         <div class="toggle-buttons">
-          <button class="toggle-btn active" data-method="cos" id="toggle-cos">
-            COSINE SIMILARITY (DIRECTIONAL)
+          <button class="toggle-btn active" data-method="mah" id="toggle-mah">
+            MAHALANOBIS (PRIMARY Σ⁻¹)
           </button>
-          <button class="toggle-btn" data-method="mah" id="toggle-mah">
-            MAHALANOBIS (Σ⁻¹ COVARIANCE)
+          <button class="toggle-btn" data-method="cos" id="toggle-cos">
+            COSINE SIMILARITY (SECONDARY)
           </button>
         </div>
         <div class="metric-meta-box">
-          <span class="metric-meta-label">FORMULATION:</span>
-          <span class="metric-meta-val" id="method-indicator">Angular Vector Normalization [S_c = (u·v)/(||u|| ||v||)]</span>
+          <span class="metric-meta-label">METRIC STATUS & FORMULATION:</span>
+          <span class="metric-meta-val" id="method-indicator">Primary Metric: Inverse Covariance Distance [D_M = √((x - μ)ᵀ Σ⁻¹ (x - μ))]. Decouples relief/roughness collinearity (r=0.987).</span>
+          <span class="metric-note" id="method-note" style="font-size:0.62rem; color:var(--text-dim); margin-top:2px; display:block;">Cosine toggle evaluates angular direction only, ignoring elevation scale magnitude.</span>
         </div>
       </section>
 
