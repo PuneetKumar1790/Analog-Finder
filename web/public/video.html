@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analog Finder | Official 30s Demonstration Video</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2244%22 fill=%22none%22 stroke=%22%2338bdf8%22 stroke-width=%228%22/><line x1=%2250%22 y1=%2210%22 x2=%2250%22 y2=%2290%22 stroke=%22%2338bdf8%22 stroke-width=%224%22/><line x1=%2210%22 y1=%2250%22 x2=%2290%22 y2=%2250%22 stroke=%22%2338bdf8%22 stroke-width=%224%22/><circle cx=%2250%22 cy=%2250%22 r=%2212%22 fill=%22%230284c7%22/></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #070a0f;
+      color: #c9d1d9;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .video-card {
+      background: #111620;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      max-width: 1000px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .video-header {
+      padding: 14px 20px;
+      background: #0d1117;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+    .title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f0f6fc;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .video-footer {
+      padding: 16px 20px;
+      background: #0d1117;
+      border-top: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #8b949e;
+    }
+    .meta strong { color: #f0f6fc; }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      background: #161d2a;
+      border: 1px solid #30363d;
+      color: #f0f6fc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.15s ease;
+    }
+    .btn:hover {
+      background: #1e2738;
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+    .btn-primary {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-card">
+    <div class="video-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="tag">DEMO // 29.0s</span>
+        <span class="title">NASA SPACE APPS 2026 // ANALOG FINDER PROJECT DEMONSTRATION</span>
+      </div>
+      <span class="tag" style="color:#eab308; border:1px solid rgba(234,179,8,0.3); background:rgba(234,179,8,0.1);">HARD LIMIT: ≤ 30s COMPLIANT</span>
+    </div>
+    <div class="video-container">
+      <video id="player" controls autoplay muted playsinline>
+        <source src="/analog_finder_demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="video-footer">
+      <div class="meta">
+        DURATION: <strong>29.00s</strong> • RESOLUTION: <strong>1080p (1920x1080)</strong> • AUDIO: <strong>AAC 192k</strong>
+      </div>
+      <div class="btn-group">
+        <a href="/" class="btn">← BACK TO WORKSTATION</a>
+        <a href="/analog_finder_demo.mp4" download="Analog_Finder_Demo_30s.mp4" class="btn btn-primary">[DOWNLOAD MP4 (23.6 MB)]</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
