@@ -71,12 +71,13 @@ Authoritative planetary and terrestrial datasets used in the **Analog Finder** p
 
 ---
 
-## 4. Known Analog Ground Truth Reference Sites
+## 4. Literature-Recognized Analog Ground Truth Reference Sites
 
-Used to evaluate and benchmark analog discovery rankings:
+Used to benchmark and evaluate analog discovery rankings across Earth's 500,073 arid candidate cells:
 1. **Atacama Desert (Yungay, Chile):** Mackay et al. (2003), Science 302(5647); Navarro-González et al. (2003), Science 302. Mars hyper-arid soil & perchlorate analog.
-2. **Haughton Impact Crater (Devon Island, High Arctic, Canada):** Lee, P. & Osinski, G. (2005), Meteoritics & Planetary Science 40. Moon & Mars impact cratering / permafrost analog.
-3. **Death Valley (Badwater Basin, California, USA):** NASA JPL Mars Science Laboratory & Curiosity testbed. Mars closed basin / alluvial fan analog.
+2. **Death Valley (Badwater Basin, California, USA):** NASA JPL Mars Science Laboratory & Curiosity testbed. Mars closed basin / alluvial fan analog.
+3. **Mojave Desert (Cima Volcanic Field / Kelso Dunes, California, USA):** NASA rover navigation trials. Volcanic terrain / arid bajada analog.
 4. **Iceland Highlands (Askja / Holuhraun, Iceland):** Helgason et al. (2018), Planetary & Space Science; Artemis analog field trials. Basaltic volcanism & lunar highlands analog.
-5. **Mojave Desert (Cima Volcanic Field / Kelso, California, USA):** NASA rover navigation trials. Volcanic terrain / arid bajada analog.
-6. **McMurdo Dry Valleys (Antarctica):** Marchant & Head (2007), Icarus 192; McKay (2009). Hyper-arid polar cold desert for Mars and Moon polar regolith.
+5. **McMurdo Dry Valleys (Antarctica):** Marchant & Head (2007), Icarus 192; McKay (2009). Hyper-arid polar cold desert for Mars and Moon polar regolith.
+6. **Haughton Impact Crater (Devon Island, Nunavut, Canada; 75.37°N, 89.68°W):** Lee, P. & Osinski, G. (2005), Meteoritics & Planetary Science 40. Moon & Mars impact cratering / permafrost analog.
+7. **Kilbourne Hole Maar (Potrillo Volcanic Field, New Mexico, USA; 31.97°N, 106.96°W):** Graff et al. (2023), LPSC LIV; Apollo 12–17 & Artemis lunar field training site. Basaltic maar crater, xenoliths, and explosive volcanic depression analog.

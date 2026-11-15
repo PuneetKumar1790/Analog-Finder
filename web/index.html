@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NASA Planetary Analog Explorer | Quantitative Geomorphometry Instrument</title>
+  <title>Analog Finder | Planetary Analog Discovery (NASA Space Apps 2026)</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2244%22 fill=%22none%22 stroke=%22%2338bdf8%22 stroke-width=%228%22/><line x1=%2250%22 y1=%2210%22 x2=%2250%22 y2=%2290%22 stroke=%22%2338bdf8%22 stroke-width=%224%22/><line x1=%2210%22 y1=%2250%22 x2=%2290%22 y2=%2250%22 stroke=%22%2338bdf8%22 stroke-width=%224%22/><circle cx=%2250%22 cy=%2250%22 r=%2212%22 fill=%22%230284c7%22/></svg>">
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,8 +23,8 @@
           <circle cx="16" cy="16" r="4" fill="#0284c7"/>
         </svg>
         <div class="logo-text">
-          <span class="brand">NASA // PLANETARY ANALOG EXPLORER</span>
-          <span class="tagline">PDS GEOMORPHOMETRY INSTRUMENT • SPACE APPS 2026</span>
+          <span class="brand">Analog Finder: built for NASA Space Apps 2026</span>
+          <span class="tagline">QUANTITATIVE GEOMORPHOMETRY INSTRUMENT • 500,073 ARID CELLS</span>
         </div>
       </div>
 
@@ -35,8 +35,8 @@
       </div>
 
       <div class="telemetry-stat-group">
-        <span class="telemetry-chip">SAMPLE POOL: <strong>500,073 ARID CELLS</strong></span>
-        <span class="telemetry-chip">SCALE: <strong>10.0 KM EQUAL-AREA</strong></span>
+        <span class="telemetry-chip">CLIENT POOL: <strong>2,500 CANDIDATES (&lt;2ms)</strong></span>
+        <span class="telemetry-chip">GLOBAL POOL: <strong>500,073 ARID CELLS</strong></span>
         <span class="telemetry-chip status-ok">SYS: <strong>NOMINAL</strong></span>
       </div>
     </div>
@@ -46,13 +46,29 @@
         <span class="btn-prefix">[01]</span> BENCHMARK MATRIX
       </button>
       <button class="nav-btn" id="btn-how-it-works" title="Technical Architecture & Formulation">
-        <span class="btn-prefix">[02]</span> METHODOLOGY & PROVENANCE
+        <span class="btn-prefix">[02]</span> METHODOLOGY & LIMITATIONS
       </button>
       <a href="https://github.com/PuneetKumar1790/Analog-Finder" target="_blank" class="nav-btn github-btn" title="Inspect Source Code & Data Assets">
         <span class="btn-prefix">[03]</span> SOURCE REPOSITORY
       </a>
     </div>
   </header>
+
+  <!-- Plain-English Headline & 3-Step Quick Guide -->
+  <div class="mission-subbar" id="mission-subbar">
+    <div class="headline-container">
+      <h1 class="plain-headline" id="plain-headline">Where on Earth looks like Jezero Crater?</h1>
+      <span class="plain-subheadline" id="plain-subheadline">Terrain-first screening across 500,073 arid/polar Earth cells matching slope, roughness, and relief</span>
+    </div>
+    <div class="how-to-use-bar">
+      <span class="guide-tag">HOW TO USE:</span>
+      <div class="how-step"><span class="step-num-pill">1</span> Pick target crater</div>
+      <span class="guide-arrow">→</span>
+      <div class="how-step"><span class="step-num-pill">2</span> Review top Earth matches</div>
+      <span class="guide-arrow">→</span>
+      <div class="how-step"><span class="step-num-pill">3</span> Click cell or drag sliders</div>
+    </div>
+  </div>
 
   <!-- Main Workstation Layout -->
   <main class="app-layout">
@@ -162,7 +178,7 @@
           <input type="range" id="slider-w-relief" min="0" max="100" value="20" class="slider">
         </div>
         <div class="calibration-status">
-          <span class="cal-dot"></span> LIVE VECTOR RE-CALCULATION ACTIVE (2,500 CANDIDATES IN &lt;2ms)
+          <span class="cal-dot"></span> LIVE CLIENT-SIDE RE-WEIGHTING ACTIVE (2,500 CANDIDATES IN &lt;2ms | 500,073 CELLS EVALUATED OFFLINE)
         </div>
       </section>
 
@@ -247,7 +263,7 @@
           <span class="modal-code">[MAT-01]</span>
           <div>
             <h2>GROUND-TRUTH BENCHMARK VALIDATION MATRIX</h2>
-            <p>Quantitative cross-validation of 6 NASA/ESA-certified planetary analogs against 500,073 arid Earth grid cells</p>
+            <p>Quantitative cross-validation of 7 literature-recognized planetary analogs against 500,073 arid Earth grid cells</p>
           </div>
         </div>
         <button class="modal-close" data-close="modal-validation">[CLOSE]</button>
@@ -292,15 +308,23 @@
           <div class="step-num">03</div>
           <div class="step-content">
             <h4>Dual Engine: Directional Cosine vs. Covariance-Weighted Metric</h4>
-            <p>The client application dynamically executes weighted Cosine Similarity (\(S_c\)) for angular alignment and Mahalanobis Distance (\(D_M\)) for multivariate cluster proximity, re-evaluating top candidates across the global sample pool in sub-millisecond client-side execution.</p>
+            <p>The client application dynamically executes weighted Cosine Similarity (\(S_c\)) for angular alignment and Mahalanobis Distance (\(D_M\)) for multivariate cluster proximity, re-evaluating 2,500 pre-filtered candidates in &lt;2 ms in JavaScript while the full 500,073-cell global ranking is computed offline.</p>
           </div>
         </div>
 
         <div class="how-step">
           <div class="step-num">04</div>
           <div class="step-content">
-            <h4>Scientific Limitations & Terrestrial Boundary Conditions</h4>
-            <p>Planetary surface weathering operates under severe atmospheric pressure differentials: vacuum (Moon), 6 mbar \(CO_2\) (Mars), and 1,013 mbar \(N_2/O_2\) (Earth). Thermal diurnal amplitudes cannot be directly mapped without climate distortion. The system restricts Earth sampling to arid climates (\(P_{\text{annual}} &lt; 500\text{ mm}\)) to preserve mechanical weathering and regolith fidelity.</p>
+            <h4>Terrain-First Screen & Scientific Limitations</h4>
+            <p>Results represent a terrain-first screen (slope, roughness, relief + macroclimate aridity filter), not a full geologic or mineralogical match. Hyperspectral mineralogy and thermal dynamics are key future extensions. Planetary surface weathering operates under severe atmospheric pressure differentials: vacuum (Moon), 6 mbar \(CO_2\) (Mars), and 1,013 mbar \(N_2/O_2\) (Earth).</p>
+          </div>
+        </div>
+
+        <div class="how-step">
+          <div class="step-num">05</div>
+          <div class="step-content">
+            <h4>Shackleton Crater Resolution & Illumination Constraints</h4>
+            <p>Shackleton Crater Rim (~21 km diameter) spans only a few 10 km grid blocks, making its regional elevation fingerprint comparatively coarse. Furthermore, permanent shadow regions (PSRs) and volatile cold traps (~40 K) are dictated by polar low-elevation solar angles and cannot be captured by terrain morphometry alone.</p>
           </div>
         </div>
       </div>

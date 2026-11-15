@@ -55,10 +55,17 @@ known_analogs:
   haughton:
     name: "Haughton Impact Crater"
     region: "Devon Island, Canada"
-    lat: 75.38
-    lon: -89.67
+    lat: 75.37
+    lon: -89.68
     target_match: ["shackleton", "jezero"]
     description: "23-km meteorite impact crater in barren polar desert terrain, featuring shattered breccia, hydrothermal paleolakes, permafrost, and NASA Haughton-Mars Project base."
+  kilbourne:
+    name: "Kilbourne Hole Maar"
+    region: "New Mexico, USA"
+    lat: 31.97
+    lon: -106.96
+    target_match: ["shackleton", "jezero"]
+    description: "Volcanic maar crater with xenolith mantle xenocrysts and ejecta rim, used for lunar surface science training by Apollo astronauts and Artemis field crews."
   death_valley:
     name: "Death Valley (Badwater Basin)"
     region: "California, USA"

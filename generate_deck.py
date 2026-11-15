@@ -283,7 +283,7 @@ def create_deck():
     add_header(s6, 6, "Scientific Validation & Discoveries", "Ground-Truth Benchmark Matrix & Novel Terrestrial Analogs")
 
     add_card(s6, 0.8, 1.7, 5.6, 5.2, "Empirical Validation (500,073 Cells)", [
-        "Tested against NASA's certified planetary analog catalog:",
+        "Tested against literature-recognized planetary analog benchmarks:",
         "",
         "★ Atacama Desert (Yungay, Chile):",
         "Ranks #51 out of 500,073 cells (Top 0.01%) for Jezero Crater.",

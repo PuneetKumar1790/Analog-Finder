@@ -76,9 +76,11 @@ async function init() {
     setupEvents();
 
     // 4. Render initial target state
+    updateHeadline(activeTarget);
     renderTargetFingerprint();
     updateCandidatesList();
     renderValidationModal();
+    renderDefaultInspection(activeTarget);
 
   } catch (err) {
     console.error('CRITICAL: Failed to load application data:', err);
@@ -112,6 +114,7 @@ function initMap() {
   map.on('load', () => {
     updateHeatmapLayer();
     renderMarkers();
+    flyToTopCandidate(activeTarget);
   });
 }
 
@@ -471,6 +474,161 @@ function getRegionName(lat, lon) {
   return `Arid Terrain (${lat.toFixed(1)}°, ${lon.toFixed(1)}°)`;
 }
 
+function updateHeadline(targetKey) {
+  const hlEl = document.getElementById('plain-headline');
+  const subEl = document.getElementById('plain-subheadline');
+  const navTarget = document.getElementById('nav-target-name');
+  if (!hlEl) return;
+
+  if (targetKey === 'jezero') {
+    hlEl.innerText = "Where on Earth looks like Jezero Crater?";
+    if (subEl) subEl.innerText = "Terrain-first screening across 500,073 arid/polar Earth cells matching lakebed & delta topography";
+    if (navTarget) navTarget.innerText = "JEZERO CRATER [MARS]";
+  } else if (targetKey === 'gale') {
+    hlEl.innerText = "Where on Earth looks like Gale Crater & Mt. Sharp?";
+    if (subEl) subEl.innerText = "Screening for deep impact basins with massive central mountain relief (Δz > 5,000 m)";
+    if (navTarget) navTarget.innerText = "GALE CRATER [MARS]";
+  } else if (targetKey === 'shackleton') {
+    hlEl.innerText = "Where on Earth looks like Shackleton Crater Rim?";
+    if (subEl) subEl.innerText = "Screening for steep, rugged polar impact rims and bedrock scarps in extreme cold desert regimes";
+    if (navTarget) navTarget.innerText = "SHACKLETON RIM [MOON]";
+  }
+}
+
+function flyToTopCandidate(targetKey) {
+  if (!map) return;
+  const topMatches = getTopMatchesForTarget(targetKey, 1);
+  if (topMatches.length > 0) {
+    map.flyTo({ center: [topMatches[0].lon, topMatches[0].lat], zoom: 4.0, duration: 1800 });
+  }
+}
+
+function getTopMatchesForTarget(targetKey, limit = 5) {
+  const target = targets[targetKey];
+  if (!target || candidateCells.length === 0) return [];
+
+  const totalW = weights.slope + weights.roughness + weights.relief;
+  const normW = {
+    slope: weights.slope / totalW,
+    roughness: weights.roughness / totalW,
+    relief: weights.relief / totalW
+  };
+
+  const scored = candidateCells.map(cell => ({
+    ...cell,
+    sim: calculateCellSimilarity(cell, target, normW)
+  }));
+
+  scored.sort((a, b) => b.sim - a.sim);
+
+  const seen = [];
+  const topList = [];
+
+  for (const cell of scored) {
+    if (seen.some(c => Math.abs(c.lat - cell.lat) < 2.0 && Math.abs(c.lon - cell.lon) < 2.0)) {
+      continue;
+    }
+    seen.push(cell);
+    topList.push(cell);
+    if (topList.length >= limit) break;
+  }
+  return topList;
+}
+
+function getOneLineWhy(cell, target) {
+  const dSlope = Math.abs(cell.slope - target.mean_slope);
+  const dRough = Math.abs(cell.roughness - target.roughness);
+  const dRelief = Math.abs(cell.relief - target.local_relief);
+
+  const pSlope = dSlope / (target.mean_slope + 0.1);
+  const pRough = dRough / (target.roughness + 1.0);
+  const pRelief = dRelief / (target.local_relief + 1.0);
+
+  if (pSlope <= pRough && pSlope <= pRelief) {
+    return `Prime slope alignment: slope ${cell.slope.toFixed(2)}° matches within ${dSlope.toFixed(2)}° of target gradient (${target.mean_slope.toFixed(2)}°).`;
+  } else if (pRough <= pRelief) {
+    return `Micro-roughness match: surface roughness ${cell.roughness.toFixed(1)}m aligns within ${dRough.toFixed(1)}m of target standard deviation (${target.roughness.toFixed(1)}m).`;
+  } else {
+    return `Macro-relief match: dynamic elevation range ${cell.relief.toFixed(0)}m matches target incision relief (${target.local_relief.toFixed(0)}m).`;
+  }
+}
+
+function renderDefaultInspection(targetKey) {
+  const target = targets[targetKey];
+  const inspectEl = document.getElementById('inspect-content');
+  if (!target || !inspectEl) return;
+
+  const topMatches = getTopMatchesForTarget(targetKey, 5);
+
+  let html = `
+    <div class="top5-header">
+      <div class="top5-badge">FIRST-LOOK OVERVIEW</div>
+      <h3 class="top5-title">TOP 5 EARTH MATCHES FOR ${target.name.toUpperCase()}</h3>
+      <p class="top5-subtitle">Terrain-first screening across 500,073 arid Earth cells. Click any card to stream full station diagnostics and fly the map.</p>
+    </div>
+    <div class="top5-cards-list">
+  `;
+
+  topMatches.forEach((cell, idx) => {
+    const regionName = getRegionName(cell.lat, cell.lon);
+    const latStr = `${Math.abs(cell.lat).toFixed(2)}°${cell.lat >= 0 ? 'N' : 'S'}`;
+    const lonStr = `${Math.abs(cell.lon).toFixed(2)}°${cell.lon >= 0 ? 'E' : 'W'}`;
+    const whyText = getOneLineWhy(cell, target);
+
+    html += `
+      <div class="top5-card" data-cell-id="${cell.id}">
+        <div class="top5-card-top">
+          <span class="top5-rank">#${(idx + 1).toString().padStart(2, '0')}</span>
+          <div class="top5-name-wrap">
+            <div class="top5-name">${regionName}</div>
+            <div class="top5-coords">${latStr}, ${lonStr} • Elev: ${cell.elevation}m</div>
+          </div>
+          <div class="top5-score">${(cell.sim * 100).toFixed(1)}%</div>
+        </div>
+        <div class="top5-why">
+          <span class="why-tag">WHY:</span> ${whyText}
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  inspectEl.innerHTML = html;
+
+  // Bind click handlers to inspect card
+  document.querySelectorAll('.top5-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const cellId = parseInt(card.dataset.cellId);
+      const cell = candidateCells.find(c => c.id === cellId);
+      if (cell) {
+        const totalW = weights.slope + weights.roughness + weights.relief;
+        const normW = {
+          slope: weights.slope / totalW,
+          roughness: weights.roughness / totalW,
+          relief: weights.relief / totalW
+        };
+        const sim = calculateCellSimilarity(cell, target, normW);
+        selectLocation({
+          name: getRegionName(cell.lat, cell.lon),
+          region: `TERRESTRIAL GRID CELL ID #${cell.id}`,
+          lat: cell.lat,
+          lon: cell.lon,
+          slope: cell.slope,
+          roughness: cell.roughness,
+          relief: cell.relief,
+          elevation: cell.elevation,
+          precip: cell.precip,
+          similarity: sim,
+          description: `High-confidence ${target.name} analog identified through multivariate geomorphometric similarity matching.`
+        });
+        if (map) {
+          map.flyTo({ center: [cell.lon, cell.lat], zoom: 4.8, duration: 1200 });
+        }
+      }
+    });
+  });
+}
+
 function selectLocation(loc) {
   selectedLocation = loc;
   const target = targets[activeTarget];
@@ -486,6 +644,10 @@ function selectLocation(loc) {
   const lonStr = `${Math.abs(loc.lon).toFixed(4)}°${loc.lon >= 0 ? 'E' : 'W'}`;
 
   inspectEl.innerHTML = `
+    <div style="margin-bottom: 8px;">
+      <button class="btn-back-to-top5" id="btn-back-to-top5">‹ BACK TO TOP 5 MATCHES</button>
+    </div>
+
     <div class="inspect-header-info">
       <div class="loc-title">${loc.name}</div>
       <div class="loc-subtitle">${loc.region}</div>
@@ -569,6 +731,14 @@ function selectLocation(loc) {
       </div>
     </div>
   `;
+
+  const btnBack = document.getElementById('btn-back-to-top5');
+  if (btnBack) {
+    btnBack.addEventListener('click', () => {
+      selectedLocation = null;
+      renderDefaultInspection(activeTarget);
+    });
+  }
 }
 
 function generateWhyItMatches(loc, target) {
@@ -635,55 +805,237 @@ function renderTargetFingerprint() {
   }
 }
 
+let activeValidationTab = 'benchmarks'; // 'benchmarks' or 'robustness'
+let activeRobustnessTarget = 'jezero';
+
 function renderValidationModal() {
   const container = document.getElementById('validation-table-container');
   if (!container || !validationReport) return;
 
   let html = `
-    <div class="modal-meta-strip">
-      <span class="modal-meta-tag">SAMPLE POOL: 500,073 ARID CELLS</span>
-      <span class="modal-meta-tag">APERTURE: 10.0 KM EQUAL-AREA</span>
-      <span class="modal-meta-tag">COVARIANCE: det(Σ) = 0.0142</span>
+    <div class="modal-tab-strip">
+      <button class="modal-tab-btn ${activeValidationTab === 'benchmarks' ? 'active' : ''}" id="btn-valtab-benchmarks">
+        [01] BENCHMARK VALIDATION MATRIX
+      </button>
+      <button class="modal-tab-btn ${activeValidationTab === 'robustness' ? 'active' : ''}" id="btn-valtab-robustness">
+        [02] CONTROLS & ROBUSTNESS (ABLATION / SENSITIVITY)
+      </button>
     </div>
-    <table class="val-table">
-      <thead>
-        <tr>
-          <th>MISSION TARGET</th>
-          <th>CERTIFIED ANALOG</th>
-          <th>CLASSIFICATION</th>
-          <th>COSINE SIM (S_c)</th>
-          <th>GLOBAL RANK</th>
-          <th>PERCENTILE</th>
-          <th>MAHALANOBIS (D_M)</th>
-        </tr>
-      </thead>
-      <tbody>
   `;
 
-  Object.entries(validationReport).forEach(([tKey, tData]) => {
-    tData.known_analogs.forEach(a => {
-      const isTop1 = a.cosine_rank <= 5000;
-      const rankPillClass = isTop1 ? 'rank-top1' : (a.cosine_rank <= 25000 ? 'rank-top5' : 'rank-other');
-      html += `
-        <tr>
-          <td><strong>${tData.target.name}</strong></td>
-          <td>${a.name} <span style="font-size:0.68rem; color:var(--text-dim)">[${a.region}]</span></td>
-          <td>${a.is_primary_target_match ? '<span style="color:var(--color-benchmark-gold); font-weight:700;">PRIMARY BENCHMARK</span>' : '<span style="color:var(--text-muted);">SECONDARY</span>'}</td>
-          <td>${a.cosine_similarity.toFixed(4)}</td>
-          <td><span class="rank-pill ${rankPillClass}">#${a.cosine_rank.toLocaleString()}</span></td>
-          <td style="color:${isTop1 ? 'var(--color-benchmark-gold)' : 'var(--text-bright)'}">TOP ${(100 - a.cosine_percentile).toFixed(2)}%</td>
-          <td>D<sub>M</sub> = ${a.mahalanobis_distance}</td>
-        </tr>
-      `;
+  if (activeValidationTab === 'benchmarks') {
+    html += `
+      <div class="modal-meta-strip">
+        <span class="modal-meta-tag">SAMPLE POOL: 500,073 ARID CELLS</span>
+        <span class="modal-meta-tag">APERTURE: 10.0 KM EQUAL-AREA</span>
+        <span class="modal-meta-tag">COVARIANCE: det(Σ) = 0.0142</span>
+      </div>
+      <table class="val-table">
+        <thead>
+          <tr>
+            <th>MISSION TARGET</th>
+            <th>LITERATURE ANALOG</th>
+            <th>CLASSIFICATION</th>
+            <th>COSINE SIM (S_c)</th>
+            <th>GLOBAL RANK</th>
+            <th>PERCENTILE</th>
+            <th>MAHALANOBIS (D_M)</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    Object.entries(validationReport).forEach(([tKey, tData]) => {
+      tData.known_analogs.forEach(a => {
+        const isTop1 = a.cosine_rank <= 5000;
+        const rankPillClass = isTop1 ? 'rank-top1' : (a.cosine_rank <= 25000 ? 'rank-top5' : 'rank-other');
+        html += `
+          <tr>
+            <td><strong>${tData.target.name}</strong></td>
+            <td>${a.name} <span style="font-size:0.68rem; color:var(--text-dim)">[${a.region}]</span></td>
+            <td>${a.is_primary_target_match ? '<span style="color:var(--color-benchmark-gold); font-weight:700;">PRIMARY BENCHMARK</span>' : '<span style="color:var(--text-muted);">SECONDARY</span>'}</td>
+            <td>${a.cosine_similarity.toFixed(4)}</td>
+            <td><span class="rank-pill ${rankPillClass}">#${a.cosine_rank.toLocaleString()}</span></td>
+            <td style="color:${isTop1 ? 'var(--color-benchmark-gold)' : 'var(--text-bright)'}">TOP ${(100 - a.cosine_percentile).toFixed(2)}%</td>
+            <td>D<sub>M</sub> = ${a.mahalanobis_distance}</td>
+          </tr>
+        `;
+      });
     });
-  });
 
-  html += `
-      </tbody>
-    </table>
-  `;
+    html += `
+        </tbody>
+      </table>
+    `;
+  } else {
+    // CONTROLS & ROBUSTNESS TAB
+    const tData = validationReport[activeRobustnessTarget] || validationReport['jezero'];
+    const targetObj = tData.target;
+    const takeaway = tData.robustness_takeaway || '';
+
+    html += `
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+        <div class="toggle-buttons" style="margin-bottom:0;">
+          ${Object.keys(validationReport).map(tk => `
+            <button class="toggle-btn ${activeRobustnessTarget === tk ? 'active' : ''}" data-robtarget="${tk}">
+              ${validationReport[tk].target.name.toUpperCase()}
+            </button>
+          `).join('')}
+        </div>
+        <div class="modal-meta-strip" style="margin-bottom:0;">
+          <span class="modal-meta-tag">SAMPLE: 500,073 CELLS</span>
+          <span class="modal-meta-tag">PERTURBATIONS: N=200</span>
+          <span class="modal-meta-tag">RANDOM BASELINE: N=1,000</span>
+        </div>
+      </div>
+
+      <div class="robustness-takeaway-card">
+        <strong>TARGET TAKEAWAY (${targetObj.name.toUpperCase()}):</strong> ${takeaway}
+      </div>
+
+      <!-- Section A: Negative Controls -->
+      <div class="modal-sub-header">
+        <span class="modal-sub-title">1. NEGATIVE CONTROLS (EXPECTED NON-ANALOG FLAT/LOW-RELIEF TERRAIN)</span>
+        <span style="font-size:0.65rem; color:var(--text-dim);">EXPECTATION: LOW SIMILARITY & HIGH GLOBAL RANK</span>
+      </div>
+      <table class="val-table" style="margin-bottom:14px;">
+        <thead>
+          <tr>
+            <th>NEGATIVE CONTROL REGION</th>
+            <th>TERRAIN CHARACTERISTICS</th>
+            <th>MASK STATUS</th>
+            <th>COSINE SIM</th>
+            <th>GLOBAL RANK</th>
+            <th>PERCENTILE</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${(tData.negative_controls || []).map(nc => `
+            <tr>
+              <td><strong>${nc.name}</strong><br><span style="font-size:0.68rem; color:var(--text-dim)">${nc.region} (${nc.lat.toFixed(2)}°, ${nc.lon.toFixed(2)}°)</span></td>
+              <td style="font-family:var(--font-mono); font-size:0.68rem;">Slope: ${nc.slope}° | Rough: ${nc.roughness}m | Relief: ${nc.local_relief}m</td>
+              <td>${nc.is_in_arid_mask ? '<span class="rank-pill rank-top5">IN ARID MASK</span>' : '<span class="rank-pill rank-other">MASK-FREE CHECK</span>'}</td>
+              <td style="font-family:var(--font-mono);">${nc.cosine_similarity.toFixed(4)}</td>
+              <td><span class="rank-pill rank-other">#${nc.cosine_rank.toLocaleString()}</span></td>
+              <td style="color:var(--text-muted);">Top ${nc.top_percentile.toFixed(2)}%</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+
+      <!-- Section B: Random Sampling Baseline -->
+      <div class="modal-sub-header">
+        <span class="modal-sub-title">2. RANDOM ARID CELL BASELINE (N = 1,000 MONTE CARLO SAMPLE)</span>
+        <span style="font-size:0.65rem; color:var(--text-dim);">EMPIRICAL NULL HYPOTHESIS COMPARISON</span>
+      </div>
+      <div class="baseline-stats-grid">
+        <div class="baseline-card">
+          <span class="baseline-card-label">RANDOM SAMPLE MEDIAN RANK</span>
+          <span class="baseline-card-val">#${(tData.random_baseline?.median_rank || 242943).toLocaleString()} <span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">(Top ${tData.random_baseline?.median_top_percentile || 48.6}%)</span></span>
+        </div>
+        <div class="baseline-card">
+          <span class="baseline-card-label">RANDOM SAMPLE 90TH PERCENTILE</span>
+          <span class="baseline-card-val">#${(tData.random_baseline?.p90_rank || 54191).toLocaleString()} <span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">(Top ${tData.random_baseline?.p90_top_percentile || 10.8}%)</span></span>
+        </div>
+        <div class="baseline-card" style="grid-column: span 2;">
+          <span class="baseline-card-label">BENCHMARK PERFORMANCE OVER RANDOM</span>
+          <span class="baseline-card-val" style="color:var(--color-benchmark-gold); font-size:0.85rem;">
+            Primary analogs (#41 to #4,027) outperform random median by up to 4,700x and 90th percentile by over 13x–1,300x.
+          </span>
+        </div>
+      </div>
+
+      <!-- Section C: Feature Ablation Study -->
+      <div class="modal-sub-header">
+        <span class="modal-sub-title">3. FEATURE ABLATION (REMOVING ONE FEATURE AT A TIME)</span>
+        <span style="font-size:0.65rem; color:var(--text-dim);">DEMONSTRATES MULTI-SIGNAL NECESSITY</span>
+      </div>
+      <table class="val-table" style="margin-bottom:14px;">
+        <thead>
+          <tr>
+            <th>BENCHMARK ANALOG</th>
+            <th>BASELINE (ALL 3 FEATURES)</th>
+            <th>NO SLOPE (-SLOPE)</th>
+            <th>NO ROUGHNESS (-ROUGH)</th>
+            <th>NO RELIEF (-RELIEF)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(tData.ablation || {}).map(([aKey, aRanks]) => {
+            const aname = knownAnalogs[aKey]?.name || aKey;
+            return `
+              <tr>
+                <td><strong>${aname}</strong></td>
+                <td><span class="rank-pill rank-top1">#${aRanks.baseline?.rank.toLocaleString()} (Top ${aRanks.baseline?.top_pct}%)</span></td>
+                <td>#${aRanks.no_slope?.rank.toLocaleString()} <span style="font-size:0.65rem; color:var(--text-dim)">(Top ${aRanks.no_slope?.top_pct}%)</span></td>
+                <td>#${aRanks.no_roughness?.rank.toLocaleString()} <span style="font-size:0.65rem; color:var(--text-dim)">(Top ${aRanks.no_roughness?.top_pct}%)</span></td>
+                <td>#${aRanks.no_relief?.rank.toLocaleString()} <span style="font-size:0.65rem; color:var(--text-dim)">(Top ${aRanks.no_relief?.top_pct}%)</span></td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+
+      <!-- Section D: Sensitivity Analysis -->
+      <div class="modal-sub-header">
+        <span class="modal-sub-title">4. WEIGHT SENSITIVITY & RANK STABILITY (200 RANDOM PERTURBATIONS)</span>
+        <span style="font-size:0.65rem; color:var(--text-dim);">WEIGHT NOISE: σ = 0.08, RANGE [0.05, 0.90]</span>
+      </div>
+      <table class="val-table">
+        <thead>
+          <tr>
+            <th>BENCHMARK ANALOG</th>
+            <th>MEDIAN RANK</th>
+            <th>INTERQUARTILE RANGE (IQR)</th>
+            <th>Q25 - Q75 SPAN</th>
+            <th>MIN - MAX RANGE</th>
+            <th>PERCENTILE</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(tData.sensitivity || {}).map(([aKey, sStats]) => {
+            const aname = knownAnalogs[aKey]?.name || aKey;
+            return `
+              <tr>
+                <td><strong>${aname}</strong></td>
+                <td><span class="rank-pill rank-top1">#${sStats.median_rank.toLocaleString()}</span></td>
+                <td style="font-family:var(--font-mono); font-weight:700; color:var(--color-telemetry-cyan);">IQR = ${sStats.iqr.toLocaleString()}</td>
+                <td style="font-family:var(--font-mono); font-size:0.68rem;">#${sStats.q25_rank.toLocaleString()} – #${sStats.q75_rank.toLocaleString()}</td>
+                <td style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-dim);">#${sStats.min_rank.toLocaleString()} – #${sStats.max_rank.toLocaleString()}</td>
+                <td style="color:var(--color-benchmark-gold); font-weight:700;">Top ${sStats.median_top_pct.toFixed(2)}%</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+  }
 
   container.innerHTML = html;
+
+  // Bind tab listeners
+  const btnBench = document.getElementById('btn-valtab-benchmarks');
+  const btnRobust = document.getElementById('btn-valtab-robustness');
+  if (btnBench) {
+    btnBench.addEventListener('click', () => {
+      activeValidationTab = 'benchmarks';
+      renderValidationModal();
+    });
+  }
+  if (btnRobust) {
+    btnRobust.addEventListener('click', () => {
+      activeValidationTab = 'robustness';
+      renderValidationModal();
+    });
+  }
+
+  // Bind target sub-tab listeners in robustness tab
+  document.querySelectorAll('[data-robtarget]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeRobustnessTarget = btn.dataset.robtarget;
+      renderValidationModal();
+    });
+  });
 }
 
 function setupEvents() {
@@ -693,10 +1045,14 @@ function setupEvents() {
       document.querySelectorAll('.target-card').forEach(c => c.classList.remove('active'));
       card.classList.add('active');
       activeTarget = card.dataset.target;
+      updateHeadline(activeTarget);
       renderTargetFingerprint();
       updateHeatmapLayer();
       renderMarkers();
       updateCandidatesList();
+      selectedLocation = null;
+      renderDefaultInspection(activeTarget);
+      flyToTopCandidate(activeTarget);
     });
   });
 
@@ -754,6 +1110,8 @@ function setupEvents() {
     updateCandidatesList();
     if (selectedLocation) {
       selectLocation(selectedLocation);
+    } else {
+      renderDefaultInspection(activeTarget);
     }
   };
 
@@ -787,21 +1145,8 @@ function setupEvents() {
   });
 
   document.getElementById('btn-close-inspect').addEventListener('click', () => {
-    document.getElementById('inspect-content').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-reticle">
-          <svg viewBox="0 0 48 48" width="36" height="36" fill="none">
-            <circle cx="24" cy="24" r="20" stroke="#334155" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="24" y1="4" x2="24" y2="44" stroke="#334155" stroke-width="1"/>
-            <line x1="4" y1="24" x2="44" y2="24" stroke="#334155" stroke-width="1"/>
-            <rect x="20" y="20" width="8" height="8" stroke="#0284c7" stroke-width="1.2"/>
-          </svg>
-        </div>
-        <h3>AWAITING STATION QUERY</h3>
-        <p>Click any highlighted terrestrial cell or ground-truth benchmark marker on the map to stream morphometric telemetry and geological matching rationale.</p>
-      </div>
-    `;
     selectedLocation = null;
+    renderDefaultInspection(activeTarget);
   });
 }
 

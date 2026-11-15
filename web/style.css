@@ -45,6 +45,8 @@ body {
   font-size: 13px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Tabular numbers for all telemetry and data elements */
@@ -200,11 +202,92 @@ body {
   color: var(--color-telemetry-cyan);
 }
 
+/* Mission Sub-Bar: Headline & 3-Step Quick Start */
+.mission-subbar {
+  flex-shrink: 0;
+  background: var(--bg-frame);
+  border-bottom: 1px solid var(--border-mid);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 50;
+}
+
+.headline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plain-headline {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: -0.01em;
+}
+
+.plain-subheadline {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.how-to-use-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+
+.guide-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-telemetry-cyan);
+  letter-spacing: 0.04em;
+}
+
+.how-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-bright);
+}
+
+.step-num-pill {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid var(--color-telemetry-cyan);
+  color: var(--color-telemetry-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guide-arrow {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
 /* App Layout */
 .app-layout {
   position: relative;
-  height: calc(100vh - 48px);
+  flex: 1;
   width: 100vw;
+  min-height: 0;
+  overflow: hidden;
 }
 
 #map {
@@ -1157,7 +1240,250 @@ body {
   line-height: 1.5;
 }
 
-/* Responsive Rules */
+/* Modal Navigation Tabs */
+.modal-tab-strip {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.modal-tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+}
+
+.modal-tab-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-bright);
+}
+
+.modal-tab-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--color-telemetry-cyan);
+  color: var(--color-telemetry-cyan);
+}
+
+/* Robustness Takeaway Card */
+.robustness-takeaway-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-mid);
+  border-left: 3px solid var(--color-telemetry-cyan);
+  padding: 10px 14px;
+  margin: 10px 0 14px 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-bright);
+  border-radius: 2px;
+}
+
+.robustness-takeaway-card strong {
+  color: var(--color-telemetry-cyan);
+  font-family: var(--font-mono);
+}
+
+/* Sub-section Headers inside Modal */
+.modal-sub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed var(--border-dim);
+}
+
+.modal-sub-title {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-telemetry-cyan);
+  letter-spacing: 0.05em;
+}
+
+/* Baseline Stat Cards */
+.baseline-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.baseline-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  padding: 8px 10px;
+  border-radius: 2px;
+}
+
+.baseline-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.baseline-card-val {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-top: 2px;
+  display: block;
+}
+
+/* Top 5 Earth Matches Overview */
+.top5-header {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.top5-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--color-telemetry-cyan);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.top5-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.top5-subtitle {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.top5-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.top5-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  border-radius: 2px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.top5-card:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--color-telemetry-cyan);
+  transform: translateY(-1px);
+}
+
+.top5-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.top5-rank {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-telemetry-cyan);
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.top5-name-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.top5-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top5-coords {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+.top5-score {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-benchmark-gold);
+  flex-shrink: 0;
+}
+
+.top5-why {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  background: rgba(13, 17, 23, 0.6);
+  padding: 4px 6px;
+  border-radius: 2px;
+  border-left: 2px solid var(--color-telemetry-cyan);
+}
+
+.why-tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--color-telemetry-cyan);
+  margin-right: 4px;
+}
+
+.btn-back-to-top5 {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  color: var(--color-telemetry-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.btn-back-to-top5:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--color-telemetry-cyan);
+  color: var(--text-bright);
+}
+
+/* Responsive Rules for Small Devices (down to 390px) */
 @media (max-width: 900px) {
   .control-panel {
     width: calc(100% - 24px);
@@ -1173,5 +1499,97 @@ body {
   }
   .hud-status-bar {
     display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .navbar {
+    height: auto;
+    padding: 8px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .nav-left {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .telemetry-stat-group {
+    display: none;
+  }
+
+  .nav-right {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .nav-btn {
+    font-size: 0.68rem;
+    padding: 4px 8px;
+  }
+
+  .mission-subbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .plain-headline {
+    font-size: 0.92rem;
+  }
+
+  .plain-subheadline {
+    font-size: 0.65rem;
+  }
+
+  .how-to-use-bar {
+    width: 100%;
+    overflow-x: auto;
+    font-size: 0.68rem;
+    padding: 4px 8px;
+  }
+
+  .how-step {
+    font-size: 0.68rem;
+  }
+
+  .control-panel {
+    left: 8px;
+    right: 8px;
+    width: calc(100% - 16px);
+    max-height: 45vh;
+  }
+
+  .inspect-panel {
+    left: 8px;
+    right: 8px;
+    width: calc(100% - 16px);
+    max-height: 45vh;
+  }
+
+  .modal-card {
+    width: calc(100% - 16px);
+    margin: 8px;
+    max-height: 92vh;
+  }
+
+  .modal-card.wide {
+    width: calc(100% - 16px);
+  }
+
+  .val-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }

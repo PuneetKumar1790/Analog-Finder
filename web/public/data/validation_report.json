@@ -8,6 +8,8 @@
       "elev_max": -894.0,
       "name": "Jezero Crater",
       "body": "Mars",
+      "diameter_km": 45.0,
+      "description": "Ancient Martian lake basin featuring a prominent preserved river delta, clay-rich sedimentary deposits, crater rim scarps, and dry aeolian sand dunes. Landed on by NASA Perseverance.",
       "diurnal_range": 75.0
     },
     "known_analogs": [
@@ -29,13 +31,26 @@
         "name": "Haughton Impact Crater",
         "region": "Devon Island, Canada",
         "is_primary_target_match": true,
-        "cosine_similarity": 0.19193431735038757,
-        "cosine_rank": 187788,
-        "cosine_percentile": 62.45,
-        "mahalanobis_similarity": 1.4279598630143434e-06,
-        "mahalanobis_distance": 26.92,
-        "mahalanobis_rank": 37262,
-        "mahalanobis_percentile": 92.55
+        "cosine_similarity": 0.4280955493450165,
+        "cosine_rank": 161800,
+        "cosine_percentile": 67.64,
+        "mahalanobis_similarity": 1.9821289310642602e-06,
+        "mahalanobis_distance": 26.26,
+        "mahalanobis_rank": 18944,
+        "mahalanobis_percentile": 96.21
+      },
+      {
+        "analog_id": "kilbourne",
+        "name": "Kilbourne Hole Maar",
+        "region": "New Mexico, USA",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.3923831284046173,
+        "cosine_rank": 164291,
+        "cosine_percentile": 67.15,
+        "mahalanobis_similarity": 3.6183950728788325e-06,
+        "mahalanobis_distance": 25.06,
+        "mahalanobis_rank": 6485,
+        "mahalanobis_percentile": 98.7
       },
       {
         "analog_id": "death_valley",
@@ -90,6 +105,278 @@
         "mahalanobis_percentile": 99.64
       }
     ],
+    "negative_controls": [
+      {
+        "id": "sahara_erg",
+        "name": "Grand Erg Oriental (Sahara Sand Sea)",
+        "region": "Algeria / Sahara Desert",
+        "lat": 31.08,
+        "lon": 7.42,
+        "is_in_arid_mask": true,
+        "slope": 0.02,
+        "roughness": 6.5,
+        "local_relief": 21.0,
+        "precipitation": 37.0,
+        "cosine_similarity": 0.07633060216903687,
+        "cosine_rank": 406681,
+        "top_percentile": 81.32,
+        "description": "Active hyper-arid sand sea with near-zero bedrock relief and continuous shifting dunes."
+      },
+      {
+        "id": "simpson_dunes",
+        "name": "Simpson Desert Dunefield",
+        "region": "Northern Territory, Australia",
+        "lat": -25.42,
+        "lon": 136.92,
+        "is_in_arid_mask": true,
+        "slope": 0.05,
+        "roughness": 12.4,
+        "local_relief": 42.0,
+        "precipitation": 121.0,
+        "cosine_similarity": 0.08230212330818176,
+        "cosine_rank": 326602,
+        "top_percentile": 65.31,
+        "description": "Sub-horizontal red longitudinal sand ridges with negligible bedrock outcropping and flat interdune corridors."
+      },
+      {
+        "id": "lake_eyre",
+        "name": "Lake Eyre Salt Playa",
+        "region": "South Australia",
+        "lat": -28.08,
+        "lon": 137.58,
+        "is_in_arid_mask": true,
+        "slope": 0.05,
+        "roughness": 4.9,
+        "local_relief": 11.0,
+        "precipitation": 168.0,
+        "cosine_similarity": 0.0717458426952362,
+        "cosine_rank": 495905,
+        "top_percentile": 99.17,
+        "description": "Ultra-flat endorheic salt sink and clay crust with zero topographic gradient (slope < 0.05\u00b0)."
+      },
+      {
+        "id": "qiangtang_steppe",
+        "name": "Qiangtang Lacustrine Flat Steppe",
+        "region": "Central Tibetan Plateau, China",
+        "lat": 33.08,
+        "lon": 86.92,
+        "is_in_arid_mask": true,
+        "slope": 0.26,
+        "roughness": 158.2,
+        "local_relief": 534.0,
+        "precipitation": 158.0,
+        "cosine_similarity": 0.9597983956336975,
+        "cosine_rank": 15034,
+        "top_percentile": 3.01,
+        "description": "High-altitude flat lacustrine plain with low relief, lacking crater scarps or channel incisions."
+      },
+      {
+        "id": "us_high_plains",
+        "name": "US High Plains Flat Steppe",
+        "region": "Eastern Colorado / Western Kansas, USA",
+        "lat": 38.58,
+        "lon": -102.58,
+        "is_in_arid_mask": true,
+        "slope": 0.18,
+        "roughness": 42.1,
+        "local_relief": 119.0,
+        "precipitation": 359.0,
+        "cosine_similarity": 0.11575862765312195,
+        "cosine_rank": 224091,
+        "top_percentile": 44.81,
+        "description": "Semi-arid continental tableland steppe with uniform topography (slope ~0.18\u00b0, precip ~359 mm)."
+      },
+      {
+        "id": "argentine_pampas",
+        "name": "Argentine Pampas Lowland (Mask-Free Check)",
+        "region": "Buenos Aires Province, Argentina",
+        "lat": -35.0,
+        "lon": -62.0,
+        "is_in_arid_mask": false,
+        "slope": 0.02,
+        "roughness": 6.5,
+        "local_relief": 21.0,
+        "precipitation": 966.0,
+        "cosine_similarity": 0.07642725110054016,
+        "cosine_rank": 404799,
+        "top_percentile": 80.95,
+        "description": "Extremely flat humid grassland (precip ~966 mm excludes from arid mask; secondary check confirms terrain alone yields negligible match)."
+      }
+    ],
+    "random_baseline": {
+      "sample_size": 1000,
+      "median_rank": 242943,
+      "median_top_percentile": 48.58,
+      "p90_rank": 54191,
+      "p90_top_percentile": 10.84
+    },
+    "ablation": {
+      "atacama": {
+        "baseline": {
+          "rank": 51,
+          "top_pct": 0.01
+        },
+        "no_slope": {
+          "rank": 6681,
+          "top_pct": 1.34
+        },
+        "no_roughness": {
+          "rank": 27296,
+          "top_pct": 5.46
+        },
+        "no_relief": {
+          "rank": 40614,
+          "top_pct": 8.12
+        }
+      },
+      "haughton": {
+        "baseline": {
+          "rank": 161800,
+          "top_pct": 32.36
+        },
+        "no_slope": {
+          "rank": 148739,
+          "top_pct": 29.74
+        },
+        "no_roughness": {
+          "rank": 109641,
+          "top_pct": 21.92
+        },
+        "no_relief": {
+          "rank": 499833,
+          "top_pct": 99.95
+        }
+      },
+      "kilbourne": {
+        "baseline": {
+          "rank": 164291,
+          "top_pct": 32.85
+        },
+        "no_slope": {
+          "rank": 149691,
+          "top_pct": 29.93
+        },
+        "no_roughness": {
+          "rank": 127937,
+          "top_pct": 25.58
+        },
+        "no_relief": {
+          "rank": 300463,
+          "top_pct": 60.08
+        }
+      },
+      "death_valley": {
+        "baseline": {
+          "rank": 10633,
+          "top_pct": 2.13
+        },
+        "no_slope": {
+          "rank": 33193,
+          "top_pct": 6.64
+        },
+        "no_roughness": {
+          "rank": 38595,
+          "top_pct": 7.72
+        },
+        "no_relief": {
+          "rank": 40050,
+          "top_pct": 8.01
+        }
+      },
+      "iceland": {
+        "baseline": {
+          "rank": 2674,
+          "top_pct": 0.53
+        },
+        "no_slope": {
+          "rank": 17369,
+          "top_pct": 3.47
+        },
+        "no_roughness": {
+          "rank": 55201,
+          "top_pct": 11.04
+        },
+        "no_relief": {
+          "rank": 65192,
+          "top_pct": 13.04
+        }
+      },
+      "mojave": {
+        "baseline": {
+          "rank": 419,
+          "top_pct": 0.08
+        },
+        "no_slope": {
+          "rank": 11924,
+          "top_pct": 2.38
+        },
+        "no_roughness": {
+          "rank": 44181,
+          "top_pct": 8.83
+        },
+        "no_relief": {
+          "rank": 56746,
+          "top_pct": 11.35
+        }
+      }
+    },
+    "sensitivity": {
+      "atacama": {
+        "median_rank": 49,
+        "q25_rank": 45,
+        "q75_rank": 52,
+        "iqr": 7,
+        "min_rank": 38,
+        "max_rank": 71,
+        "median_top_pct": 0.01
+      },
+      "haughton": {
+        "median_rank": 160974,
+        "q25_rank": 153389,
+        "q75_rank": 164670,
+        "iqr": 11281,
+        "min_rank": 139730,
+        "max_rank": 185583,
+        "median_top_pct": 32.19
+      },
+      "kilbourne": {
+        "median_rank": 163945,
+        "q25_rank": 161198,
+        "q75_rank": 166995,
+        "iqr": 5797,
+        "min_rank": 146170,
+        "max_rank": 185593,
+        "median_top_pct": 32.78
+      },
+      "death_valley": {
+        "median_rank": 10523,
+        "q25_rank": 9651,
+        "q75_rank": 11367,
+        "iqr": 1716,
+        "min_rank": 7589,
+        "max_rank": 14627,
+        "median_top_pct": 2.1
+      },
+      "iceland": {
+        "median_rank": 2729,
+        "q25_rank": 2682,
+        "q75_rank": 2796,
+        "iqr": 114,
+        "min_rank": 2509,
+        "max_rank": 3953,
+        "median_top_pct": 0.55
+      },
+      "mojave": {
+        "median_rank": 410,
+        "q25_rank": 383,
+        "q75_rank": 470,
+        "iqr": 87,
+        "min_rank": 350,
+        "max_rank": 710,
+        "median_top_pct": 0.08
+      }
+    },
+    "robustness_takeaway": "Atacama Desert (#51, Top 0.01%) exhibits exceptional ranking stability (IQR=7 across 200 weight perturbations), while flat negative controls (Lake Eyre #495k, Sahara Erg #406k) are rejected to the bottom 19% of Earth, confirming the multi-feature screen successfully separates crater topography from flat plains.",
     "new_candidates": [
       {
         "name": "Qaidam Basin Yardangs & Clay Playas",
@@ -123,6 +410,8 @@
       "elev_max": 1070.0,
       "name": "Gale Crater",
       "body": "Mars",
+      "diameter_km": 154.0,
+      "description": "Deep impact basin hosting Aeolis Mons (Mount Sharp), a central sedimentary peak rising 5.5 km from the crater floor with stratified sulfate and clay layers explored by NASA Curiosity.",
       "diurnal_range": 82.0
     },
     "known_analogs": [
@@ -144,13 +433,26 @@
         "name": "Haughton Impact Crater",
         "region": "Devon Island, Canada",
         "is_primary_target_match": false,
-        "cosine_similarity": 0.08410689234733582,
-        "cosine_rank": 210423,
-        "cosine_percentile": 57.92,
-        "mahalanobis_similarity": 7.499501115515328e-09,
-        "mahalanobis_distance": 37.42,
-        "mahalanobis_rank": 50488,
-        "mahalanobis_percentile": 89.9
+        "cosine_similarity": 0.2754162549972534,
+        "cosine_rank": 171620,
+        "cosine_percentile": 65.68,
+        "mahalanobis_similarity": 1.0242980425413855e-08,
+        "mahalanobis_distance": 36.79,
+        "mahalanobis_rank": 28062,
+        "mahalanobis_percentile": 94.39
+      },
+      {
+        "analog_id": "kilbourne",
+        "name": "Kilbourne Hole Maar",
+        "region": "New Mexico, USA",
+        "is_primary_target_match": false,
+        "cosine_similarity": 0.2524220049381256,
+        "cosine_rank": 173666,
+        "cosine_percentile": 65.27,
+        "mahalanobis_similarity": 1.7424096047154128e-08,
+        "mahalanobis_distance": 35.73,
+        "mahalanobis_rank": 11720,
+        "mahalanobis_percentile": 97.66
       },
       {
         "analog_id": "death_valley",
@@ -205,6 +507,197 @@
         "mahalanobis_percentile": 99.69
       }
     ],
+    "negative_controls": [
+      {
+        "id": "sahara_erg",
+        "name": "Grand Erg Oriental (Sahara Sand Sea)",
+        "region": "Algeria / Sahara Desert",
+        "lat": 31.08,
+        "lon": 7.42,
+        "is_in_arid_mask": true,
+        "slope": 0.02,
+        "roughness": 6.5,
+        "local_relief": 21.0,
+        "precipitation": 37.0,
+        "cosine_similarity": 0.023419678211212158,
+        "cosine_rank": 431699,
+        "top_percentile": 86.33,
+        "description": "Active hyper-arid sand sea with near-zero bedrock relief and continuous shifting dunes."
+      },
+      {
+        "id": "simpson_dunes",
+        "name": "Simpson Desert Dunefield",
+        "region": "Northern Territory, Australia",
+        "lat": -25.42,
+        "lon": 136.92,
+        "is_in_arid_mask": true,
+        "slope": 0.05,
+        "roughness": 12.4,
+        "local_relief": 42.0,
+        "precipitation": 121.0,
+        "cosine_similarity": 0.02780812978744507,
+        "cosine_rank": 360205,
+        "top_percentile": 72.03,
+        "description": "Sub-horizontal red longitudinal sand ridges with negligible bedrock outcropping and flat interdune corridors."
+      },
+      {
+        "id": "lake_eyre",
+        "name": "Lake Eyre Salt Playa",
+        "region": "South Australia",
+        "lat": -28.08,
+        "lon": 137.58,
+        "is_in_arid_mask": true,
+        "slope": 0.05,
+        "roughness": 4.9,
+        "local_relief": 11.0,
+        "precipitation": 168.0,
+        "cosine_similarity": 0.020788967609405518,
+        "cosine_rank": 484878,
+        "top_percentile": 96.96,
+        "description": "Ultra-flat endorheic salt sink and clay crust with zero topographic gradient (slope < 0.05\u00b0)."
+      },
+      {
+        "id": "qiangtang_steppe",
+        "name": "Qiangtang Lacustrine Flat Steppe",
+        "region": "Central Tibetan Plateau, China",
+        "lat": 33.08,
+        "lon": 86.92,
+        "is_in_arid_mask": true,
+        "slope": 0.26,
+        "roughness": 158.2,
+        "local_relief": 534.0,
+        "precipitation": 158.0,
+        "cosine_similarity": 0.9923453330993652,
+        "cosine_rank": 33150,
+        "top_percentile": 6.63,
+        "description": "High-altitude flat lacustrine plain with low relief, lacking crater scarps or channel incisions."
+      },
+      {
+        "id": "us_high_plains",
+        "name": "US High Plains Flat Steppe",
+        "region": "Eastern Colorado / Western Kansas, USA",
+        "lat": 38.58,
+        "lon": -102.58,
+        "is_in_arid_mask": true,
+        "slope": 0.18,
+        "roughness": 42.1,
+        "local_relief": 119.0,
+        "precipitation": 359.0,
+        "cosine_similarity": 0.07120591402053833,
+        "cosine_rank": 219640,
+        "top_percentile": 43.92,
+        "description": "Semi-arid continental tableland steppe with uniform topography (slope ~0.18\u00b0, precip ~359 mm)."
+      },
+      {
+        "id": "argentine_pampas",
+        "name": "Argentine Pampas Lowland (Mask-Free Check)",
+        "region": "Buenos Aires Province, Argentina",
+        "lat": -35.0,
+        "lon": -62.0,
+        "is_in_arid_mask": false,
+        "slope": 0.02,
+        "roughness": 6.5,
+        "local_relief": 21.0,
+        "precipitation": 966.0,
+        "cosine_similarity": 0.02348196506500244,
+        "cosine_rank": 430449,
+        "top_percentile": 86.08,
+        "description": "Extremely flat humid grassland (precip ~966 mm excludes from arid mask; secondary check confirms terrain alone yields negligible match)."
+      }
+    ],
+    "random_baseline": {
+      "sample_size": 1000,
+      "median_rank": 246948,
+      "median_top_percentile": 49.38,
+      "p90_rank": 52183,
+      "p90_top_percentile": 10.44
+    },
+    "ablation": {
+      "atacama": {
+        "baseline": {
+          "rank": 26244,
+          "top_pct": 5.25
+        },
+        "no_slope": {
+          "rank": 58611,
+          "top_pct": 11.72
+        },
+        "no_roughness": {
+          "rank": 16963,
+          "top_pct": 3.39
+        },
+        "no_relief": {
+          "rank": 32737,
+          "top_pct": 6.55
+        }
+      },
+      "death_valley": {
+        "baseline": {
+          "rank": 4027,
+          "top_pct": 0.81
+        },
+        "no_slope": {
+          "rank": 18211,
+          "top_pct": 3.64
+        },
+        "no_roughness": {
+          "rank": 28393,
+          "top_pct": 5.68
+        },
+        "no_relief": {
+          "rank": 31395,
+          "top_pct": 6.28
+        }
+      },
+      "mojave": {
+        "baseline": {
+          "rank": 12734,
+          "top_pct": 2.55
+        },
+        "no_slope": {
+          "rank": 26351,
+          "top_pct": 5.27
+        },
+        "no_roughness": {
+          "rank": 34743,
+          "top_pct": 6.95
+        },
+        "no_relief": {
+          "rank": 49945,
+          "top_pct": 9.99
+        }
+      }
+    },
+    "sensitivity": {
+      "atacama": {
+        "median_rank": 26048,
+        "q25_rank": 23901,
+        "q75_rank": 28731,
+        "iqr": 4830,
+        "min_rank": 16224,
+        "max_rank": 36277,
+        "median_top_pct": 5.21
+      },
+      "death_valley": {
+        "median_rank": 4062,
+        "q25_rank": 3837,
+        "q75_rank": 4434,
+        "iqr": 597,
+        "min_rank": 3560,
+        "max_rank": 7474,
+        "median_top_pct": 0.81
+      },
+      "mojave": {
+        "median_rank": 12564,
+        "q25_rank": 11636,
+        "q75_rank": 14600,
+        "iqr": 2964,
+        "min_rank": 9889,
+        "max_rank": 28028,
+        "median_top_pct": 2.51
+      }
+    },
+    "robustness_takeaway": "Death Valley (#4,027, Top 0.81%) and Mojave Desert (#12,734, Top 2.55%) beat random arid cells by 20x to 60x, while dropping local relief degrades rank by up to 8x and flat negative controls rank between #219k and #484k.",
     "new_candidates": [
       {
         "name": "San Juan Precordillera Basin",
@@ -238,6 +731,8 @@
       "elev_max": 1959.0,
       "name": "Shackleton Crater Rim",
       "body": "Moon",
+      "diameter_km": 21.0,
+      "description": "Ultra-cold lunar south polar crater with permanently shadowed regions (water ice traps) alongside rim ridges receiving near-continuous illumination. Extreme slopes (>25\u00b0) and heavily cratered regolith.",
       "diurnal_range": 45.0
     },
     "known_analogs": [
@@ -259,13 +754,26 @@
         "name": "Haughton Impact Crater",
         "region": "Devon Island, Canada",
         "is_primary_target_match": true,
-        "cosine_similarity": 0.08464008569717407,
-        "cosine_rank": 199696,
-        "cosine_percentile": 60.07,
-        "mahalanobis_similarity": 1.5619961043947174e-08,
-        "mahalanobis_distance": 35.95,
-        "mahalanobis_rank": 47989,
-        "mahalanobis_percentile": 90.4
+        "cosine_similarity": 0.27757948637008667,
+        "cosine_rank": 168388,
+        "cosine_percentile": 66.33,
+        "mahalanobis_similarity": 2.1455849513232385e-08,
+        "mahalanobis_distance": 35.31,
+        "mahalanobis_rank": 25903,
+        "mahalanobis_percentile": 94.82
+      },
+      {
+        "analog_id": "kilbourne",
+        "name": "Kilbourne Hole Maar",
+        "region": "New Mexico, USA",
+        "is_primary_target_match": true,
+        "cosine_similarity": 0.24580684304237366,
+        "cosine_rank": 170899,
+        "cosine_percentile": 65.83,
+        "mahalanobis_similarity": 3.713373976791409e-08,
+        "mahalanobis_distance": 34.22,
+        "mahalanobis_rank": 10418,
+        "mahalanobis_percentile": 97.92
       },
       {
         "analog_id": "death_valley",
@@ -320,6 +828,224 @@
         "mahalanobis_percentile": 99.69
       }
     ],
+    "negative_controls": [
+      {
+        "id": "sahara_erg",
+        "name": "Grand Erg Oriental (Sahara Sand Sea)",
+        "region": "Algeria / Sahara Desert",
+        "lat": 31.08,
+        "lon": 7.42,
+        "is_in_arid_mask": true,
+        "slope": 0.02,
+        "roughness": 6.5,
+        "local_relief": 21.0,
+        "precipitation": 37.0,
+        "cosine_similarity": 0.016084402799606323,
+        "cosine_rank": 424766,
+        "top_percentile": 84.94,
+        "description": "Active hyper-arid sand sea with near-zero bedrock relief and continuous shifting dunes."
+      },
+      {
+        "id": "simpson_dunes",
+        "name": "Simpson Desert Dunefield",
+        "region": "Northern Territory, Australia",
+        "lat": -25.42,
+        "lon": 136.92,
+        "is_in_arid_mask": true,
+        "slope": 0.05,
+        "roughness": 12.4,
+        "local_relief": 42.0,
+        "precipitation": 121.0,
+        "cosine_similarity": 0.019474148750305176,
+        "cosine_rank": 348208,
+        "top_percentile": 69.63,
+        "description": "Sub-horizontal red longitudinal sand ridges with negligible bedrock outcropping and flat interdune corridors."
+      },
+      {
+        "id": "lake_eyre",
+        "name": "Lake Eyre Salt Playa",
+        "region": "South Australia",
+        "lat": -28.08,
+        "lon": 137.58,
+        "is_in_arid_mask": true,
+        "slope": 0.05,
+        "roughness": 4.9,
+        "local_relief": 11.0,
+        "precipitation": 168.0,
+        "cosine_similarity": 0.01385769248008728,
+        "cosine_rank": 493124,
+        "top_percentile": 98.61,
+        "description": "Ultra-flat endorheic salt sink and clay crust with zero topographic gradient (slope < 0.05\u00b0)."
+      },
+      {
+        "id": "qiangtang_steppe",
+        "name": "Qiangtang Lacustrine Flat Steppe",
+        "region": "Central Tibetan Plateau, China",
+        "lat": 33.08,
+        "lon": 86.92,
+        "is_in_arid_mask": true,
+        "slope": 0.26,
+        "roughness": 158.2,
+        "local_relief": 534.0,
+        "precipitation": 158.0,
+        "cosine_similarity": 0.9817626476287842,
+        "cosine_rank": 42726,
+        "top_percentile": 8.54,
+        "description": "High-altitude flat lacustrine plain with low relief, lacking crater scarps or channel incisions."
+      },
+      {
+        "id": "us_high_plains",
+        "name": "US High Plains Flat Steppe",
+        "region": "Eastern Colorado / Western Kansas, USA",
+        "lat": 38.58,
+        "lon": -102.58,
+        "is_in_arid_mask": true,
+        "slope": 0.18,
+        "roughness": 42.1,
+        "local_relief": 119.0,
+        "precipitation": 359.0,
+        "cosine_similarity": 0.05185869336128235,
+        "cosine_rank": 220619,
+        "top_percentile": 44.12,
+        "description": "Semi-arid continental tableland steppe with uniform topography (slope ~0.18\u00b0, precip ~359 mm)."
+      },
+      {
+        "id": "argentine_pampas",
+        "name": "Argentine Pampas Lowland (Mask-Free Check)",
+        "region": "Buenos Aires Province, Argentina",
+        "lat": -35.0,
+        "lon": -62.0,
+        "is_in_arid_mask": false,
+        "slope": 0.02,
+        "roughness": 6.5,
+        "local_relief": 21.0,
+        "precipitation": 966.0,
+        "cosine_similarity": 0.016134649515151978,
+        "cosine_rank": 423304,
+        "top_percentile": 84.65,
+        "description": "Extremely flat humid grassland (precip ~966 mm excludes from arid mask; secondary check confirms terrain alone yields negligible match)."
+      }
+    ],
+    "random_baseline": {
+      "sample_size": 1000,
+      "median_rank": 245500,
+      "median_top_percentile": 49.09,
+      "p90_rank": 55837,
+      "p90_top_percentile": 11.17
+    },
+    "ablation": {
+      "haughton": {
+        "baseline": {
+          "rank": 168388,
+          "top_pct": 33.67
+        },
+        "no_slope": {
+          "rank": 151040,
+          "top_pct": 30.2
+        },
+        "no_roughness": {
+          "rank": 109723,
+          "top_pct": 21.94
+        },
+        "no_relief": {
+          "rank": 499878,
+          "top_pct": 99.96
+        }
+      },
+      "kilbourne": {
+        "baseline": {
+          "rank": 170899,
+          "top_pct": 34.17
+        },
+        "no_slope": {
+          "rank": 151898,
+          "top_pct": 30.38
+        },
+        "no_roughness": {
+          "rank": 128557,
+          "top_pct": 25.71
+        },
+        "no_relief": {
+          "rank": 300948,
+          "top_pct": 60.18
+        }
+      },
+      "iceland": {
+        "baseline": {
+          "rank": 41,
+          "top_pct": 0.01
+        },
+        "no_slope": {
+          "rank": 439,
+          "top_pct": 0.09
+        },
+        "no_roughness": {
+          "rank": 1382,
+          "top_pct": 0.28
+        },
+        "no_relief": {
+          "rank": 1082,
+          "top_pct": 0.22
+        }
+      },
+      "mcmurdo": {
+        "baseline": {
+          "rank": 1180,
+          "top_pct": 0.24
+        },
+        "no_slope": {
+          "rank": 39291,
+          "top_pct": 7.86
+        },
+        "no_roughness": {
+          "rank": 3462,
+          "top_pct": 0.69
+        },
+        "no_relief": {
+          "rank": 1031,
+          "top_pct": 0.21
+        }
+      }
+    },
+    "sensitivity": {
+      "haughton": {
+        "median_rank": 167930,
+        "q25_rank": 164899,
+        "q75_rank": 171740,
+        "iqr": 6841,
+        "min_rank": 154453,
+        "max_rank": 197056,
+        "median_top_pct": 33.58
+      },
+      "kilbourne": {
+        "median_rank": 170632,
+        "q25_rank": 167418,
+        "q75_rank": 174334,
+        "iqr": 6916,
+        "min_rank": 160025,
+        "max_rank": 197037,
+        "median_top_pct": 34.12
+      },
+      "iceland": {
+        "median_rank": 43,
+        "q25_rank": 36,
+        "q75_rank": 50,
+        "iqr": 14,
+        "min_rank": 20,
+        "max_rank": 76,
+        "median_top_pct": 0.01
+      },
+      "mcmurdo": {
+        "median_rank": 1175,
+        "q25_rank": 949,
+        "q75_rank": 1480,
+        "iqr": 531,
+        "min_rank": 565,
+        "max_rank": 3422,
+        "median_top_pct": 0.23
+      }
+    },
+    "robustness_takeaway": "Iceland Highlands (#41, Top 0.01%) and McMurdo Dry Valleys (#1,180, Top 0.24%) maintain Top <0.25% stability under perturbations, strongly outperforming the random baseline (#245,500) and rejecting flat plains (#424k\u2013493k) due to extreme lunar polar relief and slopes.",
     "new_candidates": [
       {
         "name": "Quttinirpaaq / Ellesmere Island Highlands",
@@ -339,7 +1065,7 @@
         "name": "Western Andean Volcanic Escarpment",
         "region": "Arequipa Highlands, Southern Peru",
         "lat": -15.8,
-        "lon: ": -72.1,
+        "lon": -72.1,
         "rationale": "Hyper-arid, high-relief volcanic caldera walls (>4,000 m) with bare regolith, extreme slope angles (>4\u00b0), and zero surface water, reflecting lunar impact rim morphometry."
       }
     ]

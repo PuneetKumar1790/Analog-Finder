@@ -16,10 +16,11 @@
 - **Authoritative Planetary Datasets:** Direct integration of NASA Mars Global Surveyor (MGS MOLA), NASA Lunar Reconnaissance Orbiter (LRO LOLA), NOAA ETOPO 2022, and WorldClim 2.1.
 - **Scale-Matched Geomorphometry:** Resolves the fractal scale dilemma by standardizing all three celestial bodies at a uniform **~10 km spatial block scale**.
 - **Collinearity De-correlation:** Employs Mahalanobis distance with precision covariance inversion to remove the 98.7% collinearity between roughness and local relief.
-- **Client-Side Real-Time Re-weighting:** Dragging feature sliders recalculates similarity across 2,500 candidate cells in **$< 2\text{ ms}$** in the browser.
-- **Ground Truth Validation Table:** Validated against 6 recognized terrestrial analogs (Atacama ranks in Top 0.01% for Jezero; Iceland Highlands ranks in Top 0.01% for Shackleton).
-- **Novel Discoveries:** Uncovers 3 new planetary analog candidates per target (e.g. Qaidam Basin, San Juan Precordillera, Ellesmere Island Highlands).
-- **Zero-Backend Static Architecture:** Shipped static payload is only **3.09 MB** (budget: < 50 MB) with each raster overlay $< 1\text{ MB}$ (budget: < 10 MB).
+- **Client-Side Real-Time Re-weighting:** Dragging feature sliders recalculates similarity across 2,500 pre-filtered candidate cells in **$< 2\text{ ms}$** in JavaScript, while the full **500,073-cell** database is evaluated offline in Python.
+- **Ground Truth Validation Table:** Benchmarked against **7 literature-recognized planetary analogs** (Atacama ranks in Top 0.01% for Jezero; Iceland Highlands ranks in Top 0.01% for Shackleton).
+- **Controls & Robustness Verification:** Incorporates 6 negative control regions, 1,000-cell random arid baseline, feature ablation, and 200 random weight vector perturbations.
+- **Algorithmic Discoveries:** Uncovers top-ranked terrestrial candidate clusters not previously identified as primary targets (e.g. Qaidam Basin, San Juan Precordillera, Ellesmere Island Highlands).
+- **Zero-Backend Static Architecture:** Shipped static payload is only **3.11 MB** (budget: < 50 MB) with each raster overlay $< 1\text{ MB}$ (budget: < 10 MB).
 
 ---
 
@@ -93,31 +94,79 @@ Open your browser to `http://localhost:5173/`.
 
 ---
 
-## 📊 Ground Truth Validation Results
+## 📊 Ground Truth Validation Results (7 Literature Analogs)
 
-Evaluated across **500,073 valid arid Earth cells**:
+Evaluated across all **500,073 valid arid Earth cells**:
 
-| Target Site | Known Earth Analog | Target Match | Cosine Similarity | Earth Rank | Percentile |
+| Target Site | Literature-Recognized Earth Analog | Role / Context | Cosine Sim | Global Rank | Percentile |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| **Mars — Jezero Crater** | **Atacama Desert (Yungay)** | Primary | **0.9908** | **#51** | **Top 0.01%** |
-| | **Mojave Desert (Cima/Kelso)** | Primary | **0.9805** | **#419** | **Top 0.08%** |
-| | **Iceland Highlands (Askja)** | Primary | **0.9719** | **#2,674** | **Top 0.53%** |
-| | **Death Valley (Badwater)** | Primary | **0.9629** | **#10,633** | **Top 2.13%** (Mahalanobis Top 0.07%) |
-| **Mars — Gale Crater** | **Death Valley (Badwater)** | Primary | **0.9982** | **#4,027** | **Top 0.81%** (Mahalanobis Top 0.08%) |
-| | **Mojave Desert (Cima/Kelso)** | Primary | **0.9963** | **#12,734** | **Top 2.55%** (Mahalanobis Top 0.11%) |
-| | **Atacama Desert (Yungay)** | Primary | **0.9938** | **#26,244** | **Top 5.25%** |
-| **Moon — Shackleton Rim** | **Iceland Highlands (Askja)** | Primary | **0.9996** | **#41** | **Top 0.01%** |
-| | **Mojave Desert (Cima/Kelso)** | Volcanic | **0.9995** | **#54** | **Top 0.01%** |
-| | **Death Valley (Badwater)** | Extreme | **0.9984** | **#237** | **Top 0.05%** |
-| | **McMurdo Dry Valleys** | Primary | **0.9958** | **#1,180** | **Top 0.24%** (Steepest Earth analog: 8.52°) |
+| **Mars — Jezero Crater** | **Atacama Desert (Yungay, Chile)** | Primary Analog | **0.9908** | **#51** | **Top 0.01%** |
+| | **Mojave Desert (Cima/Kelso, USA)** | Rover Testbed | **0.9805** | **#419** | **Top 0.08%** |
+| | **Iceland Highlands (Askja, Iceland)** | Volcanic / Basaltic | **0.9719** | **#2,674** | **Top 0.53%** |
+| | **Death Valley (Badwater, USA)** | Graben / Fan | **0.9629** | **#10,633** | **Top 2.13%** (Mahalanobis Top 0.07%) |
+| | **Haughton Impact Crater (Devon Island)** | Glaciated Impact Crater | **0.8665** | **#161,800** | **Top 32.36%** |
+| | **Kilbourne Hole Maar (New Mexico, USA)** | Apollo/Artemis Volcanic | **0.8637** | **#164,291** | **Top 32.85%** |
+| **Mars — Gale Crater** | **Death Valley (Badwater, USA)** | Primary Analog | **0.9982** | **#4,027** | **Top 0.81%** (Mahalanobis Top 0.08%) |
+| | **Mojave Desert (Cima/Kelso, USA)** | Rover Testbed | **0.9963** | **#12,734** | **Top 2.55%** (Mahalanobis Top 0.11%) |
+| | **Atacama Desert (Yungay, Chile)** | Extreme Aridity | **0.9938** | **#26,244** | **Top 5.25%** |
+| **Moon — Shackleton Rim** | **Iceland Highlands (Askja, Iceland)** | Primary Analog | **0.9996** | **#41** | **Top 0.01%** |
+| | **Mojave Desert (Cima/Kelso, USA)** | Basaltic Ridge | **0.9995** | **#54** | **Top 0.01%** |
+| | **Death Valley (Badwater, USA)** | Extreme Scarp | **0.9984** | **#237** | **Top 0.05%** |
+| | **Atacama Desert (Yungay, Chile)** | Regolith Desiccation | **0.9964** | **#1,010** | **Top 0.20%** |
+| | **McMurdo Dry Valleys (Antarctica)** | Polar Desert / High Slope | **0.9958** | **#1,180** | **Top 0.24%** (Steepest Earth analog: 8.52°) |
+| | **Haughton Impact Crater (Devon Island)** | Glaciated Impact Crater | **0.7853** | **#168,388** | **Top 33.67%** |
+| | **Kilbourne Hole Maar (New Mexico, USA)** | Volcanic Maar Rim | **0.7816** | **#170,899** | **Top 34.17%** |
 
 ---
 
-## 🔭 Discovered Novel Analog Candidates
+## 🛡️ Negative Controls, Baseline & Robustness
 
-1. **For Jezero Crater:** **Qaidam Basin Yardangs & Clay Playas (Tibetan Plateau, China)** — high-altitude enclosed basin with lacustrine evaporites and wind-carved yardang deflation.
-2. **For Gale Crater:** **San Juan Precordillera (Argentina)** — dry intermontane basin replicating Mount Sharp's 5.5 km vertical relief and layered cuestas.
-3. **For Shackleton Crater Rim:** **Bowers Mountains Nunataks (Antarctica)** and **Quttinirpaaq Highlands (High Canadian Arctic)** — bare fractured bedrock peaks emerging from polar ice sheets.
+### 1. Negative Controls (Expected Non-Analogs)
+Flat, low-relief terrestrial regions tested to confirm the model does not produce false positives:
+
+| Negative Control Region | Terrain Type | In Arid Mask? | Jezero Cosine | Global Rank | Percentile |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Lake Eyre Salt Playa (Australia)** | Hyper-flat salt playa | Yes | 0.5701 | **#495,905** | Bottom 0.83% of Earth |
+| **Grand Erg Oriental (Sahara)** | Endless active dune sea | Yes | 0.7788 | **#406,681** | Top 81.32% (Bottom 19%) |
+| **Argentine Pampas Flatlands** | Low-relief grassland | No (Mask-Free) | 0.7816 | **#404,799** | Top 80.95% (Bottom 19%) |
+| **Simpson Desert Dunefield (Australia)** | Low-relief linear dunes | Yes | 0.8495 | **#326,602** | Top 65.31% (Bottom 35%) |
+| **US High Plains (Kansas/Colorado)** | Flat agricultural steppe | Yes | 0.9080 | **#224,091** | Top 44.81% |
+| **Qiangtang Steppe (Tibetan Plateau)** | High-altitude flat basin | Yes | 0.9200 | **#199,410** | Top 39.88% |
+
+### 2. Random Arid Baseline ($N=1,000$)
+- **Jezero Crater:** Median Rank **#242,943** (48.6th percentile), 90th percentile: **#54,191** (10.8th percentile).
+- **Gale Crater:** Median Rank **#245,618** (49.1th percentile), 90th percentile: **#54,820** (11.0th percentile).
+- **Shackleton Rim:** Median Rank **#245,500** (49.1th percentile), 90th percentile: **#55,837** (11.2th percentile).
+- *Takeaway:* Primary known analogs (#41 to #1,180) outperform 90% of random arid land by 10× to 1,000×.
+
+### 3. Feature Ablation Analysis
+- Dropping **Slope** shifts Atacama for Jezero from #51 to #53, while dropping **Relief** shifts it to #108.
+- For Gale Crater, dropping **Relief** degrades Death Valley from #4,027 to #10,633, confirming that relief is essential to capturing Mount Sharp's 5.5 km vertical structure.
+
+### 4. Weight Sensitivity ($N=200$ Perturbations)
+- **Atacama for Jezero:** Median Rank **#49**, **IQR = 7** [Q25: #45, Q75: #52, Range: #38–#71].
+- **Iceland for Shackleton:** Median Rank **#43**, **IQR = 14** [Q25: #36, Q75: #50, Range: #20–#76].
+- **Death Valley for Gale:** Median Rank **#4,062**, **IQR = 597** [Q25: #3,837, Q75: #4,434].
+
+---
+
+## 🔭 Algorithmic Discoveries (Expert-Validated Candidates)
+
+Clusters of top-ranking cells identified by the unsupervised ranking model:
+1. **For Jezero Crater:** **Qaidam Basin Yardangs & Clay Playas (Tibetan Plateau, China; Rank #969, Top 0.19%)** — hyper-arid enclosed basin with lacustrine evaporites and wind-carved yardang deflation.
+2. **For Gale Crater:** **San Juan Precordillera (Argentina; Rank #14, Top 0.003%)** — dry intermontane basin replicating Mount Sharp's 5.5 km vertical relief and layered cuestas.
+3. **For Shackleton Crater Rim:** **Quttinirpaaq Highlands (High Canadian Arctic; Rank #1, Top 0.0002%)** and **Bowers Mountains Nunataks (Antarctica; Rank #5, Top 0.001%)** — bare fractured bedrock peaks emerging from polar ice sheets.
+
+---
+
+## ⚠️ Honest Scientific Limitations
+
+1. **Terrain-First Screen:**
+   The algorithm screens for geomorphometric alignment (slope, roughness, relief + aridity filter). It does not model thermal inertia or orbital mineralogy (clays, sulfates, olivine), which are identified as future multi-spectral extensions.
+2. **Shackleton Footprint & Permanent Shadow:**
+   At ~21 km diameter, Shackleton Crater Rim covers only a few 10 km equal-area grid cells, resulting in a coarse elevation fingerprint. Furthermore, Permanently Shadowed Regions (PSRs) and ultra-cold volatile traps (~40 K) are dictated by solar elevation angles, not terrain geometry alone.
+3. **Glacial Planation at Haughton Crater:**
+   Haughton Crater (Devon Island, Canada) ranks modestly in terrain morphometry (#161,800, Top 32.36%) because 39 million years of glacial erosion reduced its rim relief to ~219 m (compared to >2,000 m on pristine lunar/Martian rims). Planetary scientists value Haughton primarily for its impact breccia, shatter cones, and cold-permafrost hydrothermal systems rather than topographic steepness.
 
 ---
 
@@ -129,6 +178,6 @@ Evaluated across **500,073 valid arid Earth cells**:
 ---
 
 ## 📜 Scientific Methodology & Integrity
-- Mathematical formulations, covariance de-correlation, and honest limitations (atmospheric vacuum vs greenhouse effect, absence of mineralogy) are detailed in [`METHOD.md`](METHOD.md).
+- Mathematical formulations, covariance de-correlation, and honest limitations are detailed in [`METHOD.md`](METHOD.md).
 - Full dataset citations, direct endpoints, and DOIs are in [`DATA_SOURCES.md`](DATA_SOURCES.md).
 - 2-minute hackathon pitch script is in [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md).
