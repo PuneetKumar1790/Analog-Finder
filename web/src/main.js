@@ -402,14 +402,72 @@ function exportTopCandidatesCSV() {
 }
 
 function getRegionName(lat, lon) {
-  if (lat > 65) return 'High Arctic / Greenland Basin';
-  if (lat < -60) return 'Transantarctic Mountains';
-  if (lat >= -30 && lat <= -15 && lon >= -75 && lon <= -65) return 'Atacama / Central Andes';
-  if (lat >= 30 && lat <= 40 && lon >= -120 && lon <= -110) return 'Mojave / Great Basin';
-  if (lat >= 25 && lat <= 40 && lon >= 75 && lon <= 100) return 'Tibetan Plateau / Qaidam';
-  if (lat >= 15 && lat <= 30 && lon >= -15 && lon <= 45) return 'Sahara / Arabian Basin';
-  if (lat >= -35 && lat <= -20 && lon >= 115 && lon <= 140) return 'Australian Desert Shield';
-  if (lat >= 45 && lat <= 55 && lon >= 85 && lon <= 110) return 'Mongolian Steppe / Gobi';
+  // Antarctica Sectors
+  if (lat < -60) {
+    if (lon >= -180 && lon <= -130) return 'Marie Byrd Land (Antarctica)';
+    if (lon > -130 && lon <= -70) {
+      if (lat >= -72) return 'Antarctic Peninsula (Palmer Land)';
+      return 'Ellsworth Land / Vinson Range (Antarctica)';
+    }
+    if (lon > -70 && lon <= -20) return 'Pensacola Mountains / Weddell Rim (Antarctica)';
+    if (lon > -20 && lon <= 45) return 'Queen Maud Land (Antarctica)';
+    if (lon > 45 && lon <= 90) return 'Mac. Robertson Land (Antarctica)';
+    if (lon > 90 && lon <= 150) return 'Wilkes Land / Terre Adelie (Antarctica)';
+    return 'Transantarctic Mountains (Victoria Land)';
+  }
+
+  // Arctic & Sub-Arctic Sectors
+  if (lat > 60) {
+    if (lon >= -140 && lon <= -60) {
+      if (lat >= 74 && lon >= -95 && lon <= -65) return 'Ellesmere & Devon Islands (Nunavut, Canada)';
+      if (lat >= 70 && lon < -90) return 'Victoria & Banks Islands (Canadian Arctic)';
+      return 'Canadian Arctic Archipelago';
+    }
+    if (lon > -60 && lon <= -10) {
+      if (lat >= 80) return 'Peary Land (North Greenland)';
+      if (lon <= -40) return 'Northwest Greenland Ice Margin';
+      return 'Northeast Greenland Coastal Range';
+    }
+    if (lon > -10 && lon <= 35) {
+      if (lat >= 76) return 'Svalbard Archipelago / Spitsbergen (Norway)';
+      return 'Scandinavian Highlands (Fennoscandia)';
+    }
+    if (lon > 35 && lon <= 70) {
+      if (lat >= 78) return 'Franz Josef Land (Russian Arctic)';
+      return 'Novaya Zemlya (Russian Arctic)';
+    }
+    if (lon > 70 && lon <= 120) {
+      if (lat >= 72) return 'Taymyr Peninsula / Severnaya Zemlya (Russia)';
+      return 'Central Siberian Plateau (Russia)';
+    }
+    if (lon > 120 && lon <= 180) {
+      if (lat >= 68) return 'Chukotka Uplands / East Siberia';
+      return 'Verkhoyansk / Chersky Mountains (Siberia)';
+    }
+    if (lon < -140) {
+      if (lat >= 67) return 'Brooks Range / North Slope (Alaska)';
+      return 'Yukon Basin / Interior Alaska';
+    }
+  }
+
+  // Mid-Latitude Arid Deserts & Plateaus
+  if (lat >= -35 && lat <= -15 && lon >= -75 && lon <= -65) return 'Atacama Desert / Central Andes (Chile)';
+  if (lat >= -55 && lat <= -35 && lon >= -75 && lon <= -60) return 'Patagonian Precordillera (Argentina)';
+  if (lat >= 30 && lat <= 43 && lon >= -125 && lon <= -105) return 'Mojave / Great Basin (USA)';
+  if (lat >= 25 && lat <= 38 && lon >= -105 && lon <= -95) return 'Chihuahuan Desert (North America)';
+  if (lat >= 26 && lat <= 42 && lon >= 75 && lon <= 105) {
+    if (lat >= 35 && lon >= 90 && lon <= 102) return 'Qaidam Basin Yardangs (Tibetan Plateau)';
+    if (lat >= 37 && lon >= 75 && lon <= 90) return 'Tarim Basin / Taklamakan Desert';
+    return 'Tibetan Plateau / Changtang Highlands';
+  }
+  if (lat >= 40 && lat <= 55 && lon >= 85 && lon <= 120) return 'Gobi Desert / Mongolian Plateau';
+  if (lat >= 40 && lat <= 55 && lon >= 45 && lon <= 85) return 'Kazakh Steppe / Turan Basin';
+  if (lat >= 15 && lat <= 35 && lon >= 35 && lon <= 65) return 'Arabian Desert / Rub al Khali';
+  if (lat >= 15 && lat <= 35 && lon >= -18 && lon <= 35) return 'Sahara Desert (North Africa)';
+  if (lat >= 25 && lat <= 40 && lon >= 45 && lon <= 70) return 'Iranian Plateau / Dasht-e Lut';
+  if (lat >= -35 && lat <= -18 && lon >= 115 && lon <= 145) return 'Australian Desert Outback';
+  if (lat >= -35 && lat <= -15 && lon >= 12 && lon <= 32) return 'Namib / Kalahari Desert (Southern Africa)';
+
   return `Arid Terrain (${lat.toFixed(1)}°, ${lon.toFixed(1)}°)`;
 }
 
