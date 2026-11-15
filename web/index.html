@@ -136,7 +136,7 @@
         </div>
         <div class="metric-meta-box">
           <span class="metric-meta-label">METRIC STATUS & FORMULATION:</span>
-          <span class="metric-meta-val" id="method-indicator">Primary Metric: Inverse Covariance Distance [D_M = √((x - μ)ᵀ Σ⁻¹ (x - μ))]. Decouples relief/roughness collinearity (r=0.987).</span>
+          <span class="metric-meta-val" id="method-indicator">Primary Metric: Inverse Covariance Distance [D_M = √((z_a - z_t)ᵀ Σ⁻¹ (z_a - z_t))]. Decouples relief/roughness collinearity (r=0.987).</span>
           <span class="metric-note" id="method-note" style="font-size:0.62rem; color:var(--text-dim); margin-top:2px; display:block;">Cosine toggle evaluates angular direction only, ignoring elevation scale magnitude.</span>
         </div>
       </section>
@@ -292,8 +292,8 @@
         <div class="how-step">
           <div class="step-num">01</div>
           <div class="step-content">
-            <h4>Spatial Scale Harmonization (~10.0 km Block Aperture)</h4>
-            <p>Terrain slope, root-mean-square roughness, and local relief exhibit fractal scale dependency. Processing Earth, Mars, and Moon digital elevation models at distinct native grid resolutions introduces profound sensor artifact bias. The pipeline resamples NOAA ETOPO 2022 (Earth), MGS MOLA MEGDR (Mars), and LRO LOLA GDR (Moon) into consistent ~10 km analysis blocks to isolate true planetary geomorphic structure.</p>
+            <h4>Multi-Sensor Planetary Footprints & Scale Harmonization</h4>
+            <p>Terrain slope, root-mean-square roughness, and local relief exhibit fractal scale dependency. Processing Earth, Mars, and Moon digital elevation models requires analyzing them across target-appropriate geomorphic footprints (Moon ~20 km window, Mars ~220 km box, Earth ~55–111 km footprint). Because relief and roughness depend directly on window size, rankings reflect relative geomorphic comparison across available orbital datasets, not absolute matches.</p>
           </div>
         </div>
 
@@ -301,7 +301,7 @@
           <div class="step-num">02</div>
           <div class="step-content">
             <h4>Multivariate Z-Score Normalization & Covariance Decoupling</h4>
-            <p>Features are standardized against the continental arid Earth background distribution: \(z = (x - \mu)/\sigma\). Topographic roughness and local relief exhibit an empirical Pearson correlation of \(r = 0.987\). Standard Euclidean distance double-counts relief amplitude; Mahalanobis distance uses the inverse covariance matrix \(\mathbf{\Sigma}^{-1}\) to project terrain features into orthogonal eigenspace.</p>
+            <p>Features are standardized against the continental arid Earth background distribution: \(z = (x - \mu)/\sigma\). Topographic roughness and local relief exhibit an empirical Pearson correlation of \(r = 0.987\). Standard Euclidean distance double-counts relief amplitude; Mahalanobis distance \(D_M = \sqrt{(\mathbf{z}_a - \mathbf{z}_t)^T \mathbf{\Sigma}^{-1} (\mathbf{z}_a - \mathbf{z}_t)}\) uses the inverse covariance matrix \(\mathbf{\Sigma}^{-1}\) to project terrain features into orthogonal eigenspace.</p>
           </div>
         </div>
 
@@ -325,7 +325,7 @@
           <div class="step-num">05</div>
           <div class="step-content">
             <h4>Shackleton Crater Resolution & Illumination Constraints</h4>
-            <p>Shackleton Crater Rim (~21 km diameter) spans only a few 10 km grid blocks, making its regional elevation fingerprint comparatively coarse. Furthermore, permanent shadow regions (PSRs) and volatile cold traps (~40 K) are dictated by polar low-elevation solar angles and cannot be captured by terrain morphometry alone.</p>
+            <p>Shackleton Crater Rim (~21 km diameter) is analyzed across a ~20 km polar stereographic window (subsampled from 20 m to 100 m/pixel), yielding a compact elevation fingerprint. Furthermore, permanent shadow regions (PSRs) and volatile cold traps (~40 K) are dictated by polar low-elevation solar angles and cannot be captured by terrain morphometry alone.</p>
           </div>
         </div>
       </div>

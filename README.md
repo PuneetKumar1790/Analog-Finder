@@ -8,14 +8,14 @@
 
 🌐 **Live Web Application:** [https://analog-finder-amber.vercel.app/](https://analog-finder-amber.vercel.app/)
 
-*Analog Finder* is an open-source, reproducible geospatial analysis pipeline and interactive web application that quantitatively matches candidate lunar and Martian exploration sites against terrestrial environments using standardized 10-kilometer terrain fingerprints and macroclimate constraints.
+*Analog Finder* is an open-source, reproducible geospatial analysis pipeline and interactive web application that quantitatively matches candidate lunar and Martian exploration sites against terrestrial environments using target-appropriate planetary terrain footprints (Moon ~20 km window, Mars ~220 km box, Earth ~55–111 km footprint) and macroclimate constraints.
 
 ---
 
 ## 🌌 Key Highlights & Differentiation
 - **Authoritative Planetary Datasets:** Direct integration of NASA Mars Global Surveyor (MGS MOLA), NASA Lunar Reconnaissance Orbiter (LRO LOLA), NOAA ETOPO 2022, and WorldClim 2.1.
-- **Scale-Matched Geomorphometry:** Resolves the fractal scale dilemma by standardizing all three celestial bodies at a uniform **~10 km spatial block scale**.
-- **Collinearity De-correlation:** Employs Mahalanobis distance with precision covariance inversion to remove the 98.7% collinearity between roughness and local relief.
+- **Sensor Footprint Harmonization:** Analyzes planetary terrain across mission-scale footprints (Moon ~20 km window, Mars ~220 km box, Earth ~55–111 km footprint) rather than uncalibrated pixel grids.
+- **Collinearity De-correlation:** Employs Mahalanobis distance with precision covariance inversion [$D_M = \sqrt{(\mathbf{z}_a - \mathbf{z}_t)^T \mathbf{\Sigma}^{-1} (\mathbf{z}_a - \mathbf{z}_t)}$] to eliminate the 98.7% collinearity between roughness and local relief.
 - **Client-Side Real-Time Re-weighting:** Dragging feature sliders recalculates similarity across 2,500 pre-filtered candidate cells in **$< 2\text{ ms}$** in JavaScript, while the full **500,073-cell** database is evaluated offline in Python.
 - **Ground Truth Validation Table:** Benchmarked against **7 literature-recognized planetary analogs** (Atacama ranks in Top 0.01% for Jezero; Iceland Highlands ranks in Top 0.01% for Shackleton).
 - **Controls & Robustness Verification:** Incorporates 6 negative control regions, 1,000-cell random arid baseline, feature ablation, and 200 random weight vector perturbations.
@@ -31,7 +31,7 @@ Analog Finder/
 ├── pipeline/                     # Reproducible Python Geospatial Pipeline
 │   ├── config.yaml               # Central configuration, weights, and verified URLs
 │   ├── 01_fetch.py               # Streamlined fetching of MOLA, LOLA, and WorldClim rasters
-│   ├── 02_features.py            # ~10 km block feature extraction (slope, roughness, relief)
+│   ├── 02_features.py            # Regional footprint feature extraction (slope, roughness, relief)
 │   ├── 03_similarity.py          # Z-score normalization, Cosine & Mahalanobis similarity
 │   ├── 04_validate.py            # Ground truth validation against 6 analogs & discovery
 │   └── 05_export.py              # Generates 6x PNG overlays (<1MB) and JSON metadata
@@ -71,7 +71,7 @@ pip install numpy scipy pandas pyyaml rasterio
 # Step 1: Fetch target planetary and climate data
 python pipeline/01_fetch.py
 
-# Step 2: Extract standardized features at ~10 km block scale
+# Step 2: Extract morphometric features across planetary analysis footprints
 python pipeline/02_features.py
 
 # Step 3: Compute Cosine & Mahalanobis similarity across 500,073 cells
@@ -170,10 +170,24 @@ Evaluated under primary Mahalanobis metric across 1,000 randomly selected cells:
 
 ## 🔭 Algorithmic Discoveries (Expert-Validated Candidates)
 
-Clusters of top-ranking cells identified by the unsupervised ranking model:
-1. **For Jezero Crater:** **Qaidam Basin Yardangs & Clay Playas (Tibetan Plateau, China; Rank #969, Top 0.19%)** — hyper-arid enclosed basin with lacustrine evaporites and wind-carved yardang deflation.
-2. **For Gale Crater:** **San Juan Precordillera (Argentina; Rank #14, Top 0.003%)** — dry intermontane basin replicating Mount Sharp's 5.5 km vertical relief and layered cuestas.
-3. **For Shackleton Crater Rim:** **Quttinirpaaq Highlands (High Canadian Arctic; Rank #1, Top 0.0002%)** and **Bowers Mountains Nunataks (Antarctica; Rank #5, Top 0.001%)** — bare fractured bedrock peaks emerging from polar ice sheets.
+Clusters of top-ranking cells identified by the unsupervised ranking model, evaluated under both primary Mahalanobis ($D_M$) and secondary Cosine ($S_c$):
+1. **For Jezero Crater:** **Qaidam Basin Yardangs & Clay Playas (Tibetan Plateau, China; 37.92°N, 96.75°E)**:
+   - **Cosine:** $S_c = 0.9768$ | **Rank #969 out of 500,073 (Top 0.19%)**
+   - **Mahalanobis:** $D_M = 25.04$ | **Rank #6,370 out of 500,073 (Top 1.27%)**  
+   *(Regional minimum Mahalanobis cell at 38.92°N, 99.25°E reaches $D_M = 19.39$, Rank #128, Top 0.026%)* — hyper-arid enclosed basin with lacustrine evaporites and wind-carved yardang deflation.
+2. **For Gale Crater:** **San Juan Precordillera (Argentina; -30.75°N, -69.75°E)**:
+   - **Cosine:** $S_c = 1.0000$ | **Rank #14 out of 500,073 (Top 0.003%)**
+   - **Mahalanobis:** $D_M = 23.02$ | **Rank #7 out of 500,073 (Top 0.001%)**  
+   *(Regional minimum Mahalanobis cell at -30.08°N, -69.92°E reaches $D_M = 21.37$, Rank #2, Top 0.0004%)* — dry intermontane basin replicating Mount Sharp's 5.5 km vertical relief and layered cuestas.
+3. **For Shackleton Crater Rim:**
+   - **Quttinirpaaq Highlands (Ellesmere Island, Canada; 82.25°N, -82.08°E)**:
+     - **Cosine:** $S_c = 1.0000$ | **Rank #1 out of 500,073 (Top 0.0002%)**
+     - **Mahalanobis:** $D_M = 33.74$ | **Rank #7,272 out of 500,073 (Top 1.45%)**  
+     *(Regional minimum Mahalanobis cell at 82.58°N, -76.42°E reaches $D_M = 31.50$, Rank #1,603, Top 0.32%)* — high-latitude frost-shattered bedrock plateau.
+   - **Bowers Mountains Nunataks (Antarctica; -71.58°N, 162.75°E)**:
+     - **Cosine:** $S_c = 0.9999$ | **Rank #5 out of 500,073 (Top 0.001%)**
+     - **Mahalanobis:** $D_M = 29.39$ | **Rank #493 out of 500,073 (Top 0.099%)**  
+     *(Regional minimum Mahalanobis cell at -70.75°N, 163.08°E reaches $D_M = 28.58$, Rank #315, Top 0.063%)* — bare fractured bedrock peaks emerging from polar ice sheets.
 
 ---
 
@@ -182,11 +196,12 @@ Clusters of top-ranking cells identified by the unsupervised ranking model:
 1. **Terrain-First Screen:**
    The algorithm screens for geomorphometric alignment (slope, roughness, relief + aridity filter). It does not model thermal inertia or orbital mineralogy (clays, sulfates, olivine), which are identified as future multi-spectral extensions.
 2. **Shackleton Footprint & Permanent Shadow:**
-   At ~21 km diameter, Shackleton Crater Rim covers only a few 10 km equal-area grid cells, resulting in a coarse elevation fingerprint. Furthermore, Permanently Shadowed Regions (PSRs) and ultra-cold volatile traps (~40 K) are dictated by solar elevation angles, not terrain geometry alone.
+   At ~21 km diameter, Shackleton Crater Rim is captured within a ~20 km polar stereographic window (subsampled from 20 m to 100 m/pixel), resulting in a compact elevation fingerprint. Furthermore, Permanently Shadowed Regions (PSRs) and ultra-cold volatile traps (~40 K) are dictated by low solar elevation angles, not terrain geometry alone.
 3. **How to Interpret Haughton Crater and Kilbourne Hole:**
    Under our primary Mahalanobis metric, both sites rank strongly in Earth's **Top 1.3% to 5.6%** (Kilbourne at #6,485, Top 1.30%; Haughton at #18,944, Top 3.79%). Under secondary Cosine, they drop to ~33% because Cosine evaluates direction while ignoring scale magnitude. While terrain screening successfully matches their moderate floor relief and low slope, their primary mission value is in **impact breccia, shock metamorphism, and volcanic mantle xenoliths**, highlighting the need for mineralogical layers in future work.
-4. **Multi-Sensor Baseline Resolution Harmonization:**
-   MOLA (Mars) is native ~3.7 km/pixel, LOLA (Moon) is 20 m/pixel (subsampled to 100 m), and Earth ETOPO/WorldClim is 1.85 km to 18.5 km. Resampling high-resolution lunar DEMs across a 21 km crater down to 1.85 km yields a compact 15×15 cell footprint. While terrain relative rankings are preserved under spatial resampling, cross-planetary resolution differences represent an inherent physical constraint in comparative geomorphometry.
+4. **Multi-Sensor Baseline Resolution & Analysis Footprints:**
+   MOLA (Mars) is analyzed across a ~220 km box (native ~3.7 km/pixel), LOLA (Moon) across a ~20 km window (native 20 m subsampled to 100 m), and Earth across a ~55–111 km footprint (WorldClim 10 arc-min ~18.5 km cell with 3x3 moving window; ETOPO 60 arcsec ~1.85 km slice).
+   *Critical Scale Dependency Limitation:* Topographic relief and roughness are scale-dependent fractal properties that directly depend on the analysis window size. Consequently, similarity scores and ranks represent **relative geomorphic comparisons across available orbital datasets, not absolute scale-invariant physical matches**.
 
 ---
 

@@ -13,22 +13,20 @@ Sending robotic probes and human crewed missions (such as NASA Artemis and Mars 
 
 ---
 
-## 2. The Scale-Matching Principle (~10 km Block Normalization)
+## 2. Multi-Sensor Planetary Footprints & Scale Harmonization
 
-A primary failure mode in planetary geomorphometry is the **fractal scale effect**: topographic slope and roughness are scale-dependent. Evaluating slope at 1-meter laser resolution produces radically different distributions than evaluating slope at 1-kilometer gridded resolution.
+A primary challenge in planetary geomorphometry is the **fractal scale effect**: topographic slope, roughness, and relief are scale-dependent. Evaluating elevation models across different planetary bodies requires analyzing them across target-appropriate geomorphic footprints rather than arbitrary pixel grids:
+1. **Moon Topography (NASA LRO LOLA):** Analyzed across a **~20 km window** ($1000\times 1000$ pixels subsampled from native 20 m to 100 m/pixel) centered on Shackleton Crater Rim.
+2. **Mars Topography (NASA MGS MOLA MEGDR):** Analyzed across a **~220 km bounding box** ($60\times 60$ pixels at native 16 pix/deg ~3.71 km/pixel) capturing regional crater basins, deltas, and central mounds.
+3. **Earth Topography (NOAA ETOPO 2022 & WorldClim 2.1):** Analyzed across a **~55–111 km footprint** (10 arc-minute ~18.5 km cell with 3x3 moving window for global background; 60 arcsec ~1.85 km for analog slices).
 
-To ensure physical and statistical comparability:
-1. **Earth Topography (NOAA ETOPO 2022 / WorldClim Elev):** Aggregated to standardized 10-arcminute ($\sim 18.5\text{ km}$ at equator, $\sim 10\text{–}15\text{ km}$ mid-latitude) blocks.
-2. **Mars Topography (NASA MGS MOLA MEGDR 16 pix/deg):** Evaluated at native $1/16^\circ$ ($\sim 3.7\text{ km/pixel}$), aggregated across $3 \times 3$ to $5 \times 5$ pixel moving blocks ($\sim 11\text{–}18\text{ km}$).
-3. **Moon Topography (NASA LRO LOLA South Polar 20m DEM):** Polar stereographic grid downsampled by $5\times$ to $100\text{ m}$ to eliminate sub-pixel laser speckle and aggregated across regional crater rim blocks ($\sim 10\text{–}20\text{ km}$).
-
-This uniform scale matching ensures that we compare *regional terrain landforms* rather than sensor artifacts.
+*Critical Scale Dependency Limitation:* Topographic relief and roughness are scale-dependent fractal properties that directly depend on the analysis window size. Consequently, similarity scores and ranks represent **relative geomorphic comparisons across available orbital datasets, not absolute scale-invariant physical matches**.
 
 ---
 
 ## 3. Quantitative Feature Definitions
 
-For every $\sim 10\text{ km}$ block on Earth, Mars, and the Moon, three fundamental morphometric features and two terrestrial filters are evaluated:
+For every candidate region on Earth, Mars, and the Moon across its respective analysis footprint, three fundamental morphometric features and two terrestrial filters are evaluated:
 
 ### 3.1 Mean Slope ($\theta$, degrees)
 Evaluated using two-dimensional central finite difference gradients with metric spatial step sizes ($dx, dy$ in meters):
@@ -66,14 +64,14 @@ $$z_i = \frac{x_i - \mu_{\text{Earth}, i}}{\sigma_{\text{Earth}, i}}$$
 On Earth, topographic roughness $\sigma_z$ and local relief $\Delta z$ exhibit extreme positive collinearity ($r = 0.987$). Without de-correlation, relief and roughness effectively double-count the same underlying geomorphic variance, artificially suppressing the influence of slope.
 
 Our primary metric is the Mahalanobis distance, which accounts for the empirical covariance structure through the inverse covariance (precision) matrix $\mathbf{\Sigma}^{-1}$:
-$$D_M(\mathbf{z}_E, \mathbf{z}_T) = \sqrt{(\mathbf{z}_E - \mathbf{z}_T)^T \mathbf{\Sigma}^{-1} (\mathbf{z}_E - \mathbf{z}_T)}$$
+$$D_M(\mathbf{z}_a, \mathbf{z}_t) = \sqrt{(\mathbf{z}_a - \mathbf{z}_t)^T \mathbf{\Sigma}^{-1} (\mathbf{z}_a - \mathbf{z}_t)}$$
 The corresponding bounded similarity score shown in the UI is:
 $$\text{Sim}_{\text{mah}} = \exp\left(-\frac{D_M}{2}\right)$$
 When $D_M = 0$, $\text{Sim}_{\text{mah}} = 1.0$.
 
 ### 4.3 Secondary Metric: Weighted Cosine Similarity
 Available as a secondary toggle in the UI for directional comparison:
-$$\mathbf{u} = \sqrt{\mathbf{w}} \odot \mathbf{z}_T, \quad \mathbf{v} = \sqrt{\mathbf{w}} \odot \mathbf{z}_E$$
+$$\mathbf{u} = \sqrt{\mathbf{w}} \odot \mathbf{z}_t, \quad \mathbf{v} = \sqrt{\mathbf{w}} \odot \mathbf{z}_a$$
 $$\text{Sim}_{\text{cos}} = \frac{1}{2} \left(1 + \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2 + \epsilon}\right)$$
 *Note on Cosine Behavior:* Cosine similarity evaluates the relative angular direction of feature vectors, but completely ignores absolute scale magnitude. Consequently, a cell whose slope, roughness, and relief are scaled down by a factor of 10 can yield a high cosine score even if its raw physical dimensions are drastically smaller than the target. Mahalanobis distance correctly penalizes both magnitude distortion and collinear variance.
 
@@ -177,11 +175,12 @@ The narrow IQRs prove the similarity topology is structurally stable and not an 
 1. **Terrain-First Screen Scope:**
    This pipeline delivers a terrain-first screen (slope, roughness, relief + macroclimate aridity filter), not a complete mineralogical or astrobiological match. Thermal inertia, perchlorate soil chemistry, phyllosilicate/clay composition, and cosmic radiation flux represent future multi-spectral extensions.
 2. **Shackleton Spatial Footprint & Illumination Constraints:**
-   Shackleton Crater (~21 km rim-to-rim diameter) spans only a few 10 km equal-area blocks, meaning its regional elevation signature is comparatively coarse. Crucially, Permanently Shadowed Regions (PSRs) and volatile cold traps (~40 K) are dictated by low solar elevation geometry, which cannot be captured by terrain morphometry alone.
+   Shackleton Crater (~21 km rim-to-rim diameter) is analyzed across a ~20 km polar stereographic window (subsampled from 20 m to 100 m/pixel), resulting in a compact elevation signature. Crucially, Permanently Shadowed Regions (PSRs) and volatile cold traps (~40 K) are dictated by low solar elevation geometry, which cannot be captured by terrain morphometry alone.
 3. **How to Interpret Haughton Crater and Kilbourne Hole:**
    Under our primary Mahalanobis metric, both sites rank strongly in Earth's **Top 1.3% to 5.6%** (Kilbourne at #6,485, Top 1.30%; Haughton at #18,944, Top 3.79%). Under secondary Cosine, they drop to ~33% because Cosine evaluates direction while ignoring scale magnitude. While terrain screening successfully matches their moderate floor relief and low slope, their primary mission value is in **impact breccia, shock metamorphism, and volcanic mantle xenoliths**, highlighting the need for mineralogical layers in future work.
-4. **Multi-Sensor Baseline Resolution Harmonization:**
-   MOLA (Mars) is native ~3.7 km/pixel, LOLA (Moon) is 20 m/pixel (subsampled to 100 m), and Earth ETOPO/WorldClim is 1.85 km to 18.5 km. Resampling high-resolution lunar DEMs across a 21 km crater down to 1.85 km yields a compact 15×15 cell footprint. While terrain relative rankings are preserved under spatial resampling, cross-planetary resolution differences represent an inherent physical constraint in comparative geomorphometry.
+4. **Multi-Sensor Analysis Footprints & Window Size Dependency:**
+   MOLA (Mars) is analyzed across a ~220 km box (native ~3.7 km/pixel), LOLA (Moon) across a ~20 km window (native 20 m subsampled to 100 m), and Earth across a ~55–111 km footprint (WorldClim 10 arc-min ~18.5 km cell with 3x3 moving window; ETOPO 60 arcsec ~1.85 km slice).
+   *Critical Scale Dependency Limitation:* Topographic relief and roughness are scale-dependent fractal properties that directly depend on the analysis window size. Consequently, similarity scores and ranks represent **relative geomorphic comparisons across available orbital datasets, not absolute scale-invariant physical matches**.
 5. **Atmospheric & Thermal Dissimilarity:**
    The Moon is an airless vacuum ($0\text{ atm}$); Mars possesses a thin $CO_2$ atmosphere ($\sim 0.006\text{ atm}$); Earth possesses a dense atmosphere with a greenhouse effect ($\sim 1\text{ atm}$). Planetary diurnal temperature swings ($45\text{–}85\text{ K}$) are governed by radiative equilibrium, whereas Earth's diurnal range is damped by convection and moisture.
 6. **Client-Side Candidate Pool vs. Offline Universe:**

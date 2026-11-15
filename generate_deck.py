@@ -164,7 +164,7 @@ def create_deck():
         "Comparing raw 60m lunar DEMs to 30m Mars MEGDR and 1km Earth grids generates severe resolution distortion.",
         "",
         "The Solution:",
-        "Our pipeline harmonizes Earth, Mars, and the Moon into uniform ~10.0 km spatial block apertures to measure true planetary morphology."
+        "Our pipeline analyzes Earth, Mars, and the Moon across target-appropriate footprints (Moon ~20 km, Mars ~220 km, Earth ~55–111 km) to measure true morphology."
     ])
 
     add_card(s2, 8.86, 1.7, 3.65, 5.2, "3. Macroclimate Surface Filter", [
@@ -197,7 +197,7 @@ def create_deck():
     ])
 
     add_card(s3, 4.83, 1.7, 3.65, 5.2, "Metric 2: Roughness (1σ Elevation)", [
-        "Standard deviation of elevation within the 10 km block window.",
+        "Standard deviation of elevation within each analysis window.",
         "",
         "Planetary Target Signatures:",
         "• Jezero Crater: 289.0 m",
@@ -240,7 +240,7 @@ def create_deck():
     add_card(s4, 6.8, 1.7, 5.7, 5.2, "Our Mahalanobis Distance Engine", [
         "We implement the multivariate Mahalanobis formulation using the inverse covariance matrix Σ⁻¹:",
         "",
-        "    D_M(z_E, z_T) = √[ (z_E - z_T)ᵀ Σ⁻¹ (z_E - z_T) ]",
+        "    D_M = √[ (z_a - z_t)ᵀ Σ⁻¹ (z_a - z_t) ]",
         "",
         "Key Mathematical Properties:",
         "• Covariance determinant: det(Σ) = 0.0142",

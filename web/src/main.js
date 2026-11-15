@@ -827,7 +827,7 @@ function renderValidationModal() {
     html += `
       <div class="modal-meta-strip">
         <span class="modal-meta-tag">SAMPLE POOL: 500,073 ARID CELLS</span>
-        <span class="modal-meta-tag">APERTURE: 10.0 KM EQUAL-AREA</span>
+        <span class="modal-meta-tag">FOOTPRINTS: MOON ~20 KM | MARS ~220 KM | EARTH ~55–111 KM</span>
         <span class="modal-meta-tag">COVARIANCE: det(Σ) = 0.0142</span>
       </div>
       <table class="val-table">
@@ -1093,7 +1093,7 @@ function setupEvents() {
     btnMah.classList.add('active');
     btnCos.classList.remove('active');
     activeMethod = 'mah';
-    methodInd.innerText = 'Primary Metric: Inverse Covariance Distance [D_M = √((x - μ)ᵀ Σ⁻¹ (x - μ))]. Decouples relief/roughness collinearity (r=0.987).';
+    methodInd.innerText = 'Primary Metric: Inverse Covariance Distance [D_M = √((z_a - z_t)ᵀ Σ⁻¹ (z_a - z_t))]. Decouples relief/roughness collinearity (r=0.987).';
     updateHeatmapLayer();
   });
 

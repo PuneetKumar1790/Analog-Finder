@@ -13,8 +13,8 @@
 
 ### [0:20 – 0:50] THE ARCHITECTURE & INNOVATION
 *(Show Architecture diagram or quick slide)*
-> *"Our pipeline addresses a critical geospatial problem: **fractal scale dependency**. Comparing a 20-meter lunar laser scan directly to a 1-kilometer Earth elevation model yields misleading slope numbers. We standardized Earth (NOAA ETOPO 2022), Mars (MGS MOLA), and the Moon (LRO LOLA) to a uniform **10-kilometer block scale**.*  
-> *For every block, we compute Mean Slope, Elevation Roughness, and Local Relief. We mask out oceans and humid zones using WorldClim 2.1 aridity grids, leaving **500,073 valid arid Earth cells**. Every metric is z-score standardized, and our Mahalanobis distance de-correlates the 98.7% collinearity between roughness and relief."*
+> *"Our pipeline addresses a critical geospatial problem: **fractal scale dependency**. Comparing a 20-meter lunar laser scan directly to a 1-kilometer Earth elevation model yields misleading slope numbers. We harmonized each body into target-appropriate geomorphic footprints: a **~20 km window** for the Moon, a **~220 km box** for Mars, and a **~55–111 km footprint** across Earth.*  
+> *For every footprint, we compute Mean Slope, Elevation Roughness, and Local Relief. We mask out oceans and humid zones using WorldClim 2.1 aridity grids, leaving **500,073 valid arid Earth cells**. Every metric is z-score standardized, and our Mahalanobis distance [$D_M = \sqrt{(\mathbf{z}_a - \mathbf{z}_t)^T \mathbf{\Sigma}^{-1} (\mathbf{z}_a - \mathbf{z}_t)}$] de-correlates the 98.7% collinearity between roughness and relief. Crucially, because relief and roughness depend on window size, our ranks represent relative geomorphic comparisons rather than absolute matches."*
 
 ---
 
@@ -39,7 +39,7 @@
 *(Switch back to tab '[01] BENCHMARK MATRIX')*
 > *"We benchmarked against **7 literature-recognized planetary analogs**. Under our primary Mahalanobis metric, **all 7 place in Earth's Top 0.05% to 5.6%**—including Kilbourne Hole at #6,485 (Top 1.30%) and Haughton Crater at #18,944 (Top 3.79%). Cosine is available as a secondary directional toggle.*  
 > *Our honest boundary: terrain screening finds where to test rover mobility and relief; mineralogy and cold-trap physics are the natural next steps for impact breccia and ice traps.*  
-> *Beyond known analogs, our algorithm discovered **genuine new candidate clusters**: the **Qaidam Basin yardangs** (Rank #969, top 0.19%) in Tibet for Jezero's deltaic deflation, the **San Juan Precordillera** (Rank #14, top 0.003%) in Argentina for Mount Sharp's 5 km relief, and **Bowers Mountains Nunataks** (Rank #5, top 0.001%) in Antarctica for Shackleton's sharp crater rim."*
+> *Beyond known analogs, our algorithm discovered **genuine new candidate clusters**: the **Qaidam Basin yardangs** (Cosine Rank #969, Mahalanobis Top 1.3%) in Tibet for Jezero's deltaic deflation, the **San Juan Precordillera** (Mahalanobis Rank #7, Cosine Rank #14, top 0.003%) in Argentina for Mount Sharp's 5 km relief, and **Bowers Mountains Nunataks** (Cosine Rank #5, Mahalanobis Rank #493) in Antarctica for Shackleton's sharp crater rim."*
 
 ---
 

@@ -405,9 +405,15 @@
       {
         "name": "Qaidam Basin Yardangs & Clay Playas",
         "region": "Northern Tibetan Plateau, China",
-        "lat": 37.5,
-        "lon": 93.8,
-        "rationale": "High-altitude hyper-arid closed basin containing extensive fossil lake deposits, clay/evaporite minerals, and wind-sculpted yardangs. Closely matches Jezero's ancient lacustrine and deltaic environment, low average slope (1.1\u00b0), and arid deflationary regime."
+        "lat": 37.92,
+        "lon": 96.75,
+        "cosine_similarity": 0.9768,
+        "cosine_rank": 969,
+        "cosine_percentile": 99.81,
+        "mahalanobis_distance": 25.04,
+        "mahalanobis_rank": 6370,
+        "mahalanobis_percentile": 98.73,
+        "rationale": "High-altitude hyper-arid closed basin containing extensive fossil lake deposits, clay/evaporite minerals, and wind-sculpted yardangs. Cosine Rank #969 (Top 0.19%), Mahalanobis Rank #6,370 (Top 1.27%, regional min #128, Top 0.026%). Closely matches Jezero's deltaic sedimentation and aeolian deflation."
       },
       {
         "name": "Puna de Atacama / Salar de Arizaro",
@@ -750,9 +756,15 @@
       {
         "name": "San Juan Precordillera Basin",
         "region": "Cuyo, Western Argentina",
-        "lat": -30.8,
-        "lon": -69.8,
-        "rationale": "Extremely dry intermontane graben flanked by steep tectonic and sedimentary escarpments, replicating Gale Crater's high local relief (2,400+ m) and central mound (Mount Sharp) slope profile."
+        "lat": -30.75,
+        "lon": -69.75,
+        "cosine_similarity": 1.0,
+        "cosine_rank": 14,
+        "cosine_percentile": 99.997,
+        "mahalanobis_distance": 23.02,
+        "mahalanobis_rank": 7,
+        "mahalanobis_percentile": 99.999,
+        "rationale": "Extremely dry intermontane graben flanked by steep tectonic and sedimentary escarpments. Mahalanobis Rank #7 (Top 0.001%), Cosine Rank #14 (Top 0.003%), replicating Gale Crater's high local relief and Mount Sharp's 5.5 km vertical profile."
       },
       {
         "name": "Ladakh / Changthang High-Altitude Desert",
@@ -1122,16 +1134,28 @@
       {
         "name": "Quttinirpaaq / Ellesmere Island Highlands",
         "region": "Nunavut, High Canadian Arctic",
-        "lat": 81.8,
-        "lon": -75.5,
-        "rationale": "Northernmost polar desert on Earth with exposed, shattered bedrock peaks and microthermal permafrost valleys, mimicking the rugged rim crests and shadowed depressions of the Lunar South Pole."
+        "lat": 82.25,
+        "lon": -82.08,
+        "cosine_similarity": 1.0,
+        "cosine_rank": 1,
+        "cosine_percentile": 99.9998,
+        "mahalanobis_distance": 33.74,
+        "mahalanobis_rank": 7272,
+        "mahalanobis_percentile": 98.55,
+        "rationale": "Northernmost polar desert on Earth with exposed, shattered bedrock peaks and microthermal permafrost. Cosine Rank #1 (Top 0.0002%), Mahalanobis Rank #7,272 (Top 1.45%, regional min #1,603, Top 0.32%), mimicking rugged rim crests."
       },
       {
         "name": "Bowers Mountains Nunataks",
         "region": "Victoria Land, Transantarctic Mountains",
-        "lat": -71.6,
-        "lon": 162.8,
-        "rationale": "Steep rocky nunatak escarpments protruding through sub-zero polar ice with continuous catabatic winds, providing a physical terrain analog for Shackleton's sharp crater crests."
+        "lat": -71.58,
+        "lon": 162.75,
+        "cosine_similarity": 0.9999,
+        "cosine_rank": 5,
+        "cosine_percentile": 99.999,
+        "mahalanobis_distance": 29.39,
+        "mahalanobis_rank": 493,
+        "mahalanobis_percentile": 99.9,
+        "rationale": "Steep rocky nunatak escarpments protruding through sub-zero polar ice. Cosine Rank #5 (Top 0.001%), Mahalanobis Rank #493 (Top 0.099%, regional min #315, Top 0.063%), providing a physical terrain analog for Shackleton's sharp crater crests."
       },
       {
         "name": "Western Andean Volcanic Escarpment",
